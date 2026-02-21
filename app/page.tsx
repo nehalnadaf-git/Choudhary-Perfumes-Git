@@ -48,9 +48,7 @@ export default async function Home() {
       <Hero />
 
       {/* ─── Shop by Category ─── */}
-      <section className="relative pt-20 md:pt-28 pb-16 md:pb-24 bg-gradient-to-b from-gray-50 to-white">
-        {/* Decorative top accent */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-12 bg-gradient-to-b from-gold/60 to-transparent" />
+      <section className="relative pt-12 md:pt-16 pb-16 md:pb-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
             <p className="text-gold text-xs font-semibold tracking-[0.25em] uppercase mb-4">Explore Our Collections</p>
