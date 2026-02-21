@@ -657,12 +657,12 @@ function DesktopProductCard({ product, onEdit, onDelete }: { product: Product; o
                     </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute top-3 left-3 flex gap-2 flex-wrap">
-                    <span className={`px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest backdrop-blur-md shadow-md ${product.inStock ? 'bg-white/95 text-emerald-700' : 'bg-red-500/90 text-white'}`}>
+                <div className="absolute top-2.5 left-2.5 md:top-3 md:left-3 flex gap-2 flex-wrap z-10">
+                    <span className={`px-2.5 py-1 text-[8px] md:text-[10px] font-bold uppercase tracking-widest rounded-full border shadow-sm bg-black/60 backdrop-blur-md ${product.inStock ? 'text-emerald-400 border-emerald-400/30' : 'text-red-400 border-red-400/30'}`}>
                         {product.inStock ? '● In Stock' : '✕ Sold Out'}
                     </span>
                     {product.featured && (
-                        <span className="px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest backdrop-blur-md shadow-md bg-[#D0AB64]/90 text-black">
+                        <span className="px-2.5 py-1 text-[8px] md:text-[10px] font-bold uppercase tracking-widest rounded-full border border-[#D0AB64]/20 shadow-sm bg-black/60 backdrop-blur-md text-[#D0AB64]">
                             ★ Bestseller
                         </span>
                     )}
