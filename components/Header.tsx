@@ -1,19 +1,76 @@
 
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiMenu, FiX, FiSearch, FiShoppingBag, FiInstagram } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import clsx from "clsx";
 import { useCart } from "@/context/CartContext";
+import { Product } from "@/lib/types";
 
 const Header = () => {
     const pathname = usePathname();
+    const router = useRouter();
     const { cartCount, toggleCart, isMenuOpen, toggleMenu, closeMenu } = useCart();
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState<Product[]>([]);
+    const [allProducts, setAllProducts] = useState<Product[]>([]);
+    const searchInputRef = useRef<HTMLInputElement>(null);
+
+    // Fetch all products once for search
+    useEffect(() => {
+        fetch('/api/products')
+            .then(res => res.json())
+            .then(data => { if (Array.isArray(data)) setAllProducts(data); })
+            .catch(() => { });
+    }, []);
+
+    // Filter products as user types
+    useEffect(() => {
+        if (!searchQuery.trim()) {
+            setSearchResults([]);
+            return;
+        }
+        const q = searchQuery.toLowerCase();
+        setSearchResults(
+            allProducts.filter(p =>
+                p.name.toLowerCase().includes(q) ||
+                p.brand.toLowerCase().includes(q) ||
+                p.category.toLowerCase().includes(q)
+            ).slice(0, 6)
+        );
+    }, [searchQuery, allProducts]);
+
+    // Focus input when search opens
+    useEffect(() => {
+        if (isSearchOpen) {
+            setTimeout(() => searchInputRef.current?.focus(), 100);
+        } else {
+            setSearchQuery('');
+            setSearchResults([]);
+        }
+    }, [isSearchOpen]);
+
+    // Close search on ESC
+    useEffect(() => {
+        const handleEsc = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') setIsSearchOpen(false);
+        };
+        window.addEventListener('keydown', handleEsc);
+        return () => window.removeEventListener('keydown', handleEsc);
+    }, []);
+
+    const handleSearchSubmit = useCallback(() => {
+        if (searchQuery.trim()) {
+            setIsSearchOpen(false);
+            router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+        }
+    }, [searchQuery, router]);
 
     useEffect(() => {
         closeMenu();
@@ -104,13 +161,13 @@ const Header = () => {
                         {/* Right: Actions */}
                         <div className="flex items-center gap-2 md:gap-3 w-[80px] md:w-[120px] justify-end">
                             {/* Search */}
-                            <Link
-                                href="/products"
+                            <button
+                                onClick={() => setIsSearchOpen(true)}
                                 className="text-white/70 hover:text-gold transition-all duration-300 focus:outline-none p-1.5 rounded-xl hover:bg-white/[0.06]"
                                 aria-label="Search products"
                             >
                                 <FiSearch size={20} className="md:w-5 md:h-5" />
-                            </Link>
+                            </button>
 
                             {/* Cart - desktop only, mobile has floating button */}
                             <button
@@ -196,6 +253,74 @@ const Header = () => {
                                     <FiInstagram size={26} />
                                 </a>
                             </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* ─── Search Overlay ─── */}
+            <AnimatePresence>
+                {isSearchOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="fixed inset-0 z-[65] bg-black/95 flex flex-col items-center"
+                    >
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setIsSearchOpen(false)}
+                            className="absolute top-6 right-6 md:top-8 md:right-10 text-white/70 hover:text-gold transition-colors p-2"
+                            aria-label="Close search"
+                        >
+                            <FiX size={28} />
+                        </button>
+
+                        {/* Search Input */}
+                        <div className="w-full max-w-xl px-6 pt-28 md:pt-36">
+                            <div className="relative">
+                                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gold" size={22} />
+                                <input
+                                    ref={searchInputRef}
+                                    type="text"
+                                    placeholder="Search for fragrances..."
+                                    value={searchQuery}
+                                    onChange={e => setSearchQuery(e.target.value)}
+                                    onKeyDown={e => e.key === 'Enter' && handleSearchSubmit()}
+                                    className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/10 rounded-2xl text-white text-lg placeholder-white/30 focus:outline-none focus:border-gold/50 focus:bg-white/[0.12] transition-all"
+                                />
+                            </div>
+
+                            {/* Results */}
+                            {searchResults.length > 0 && (
+                                <div className="mt-4 space-y-2">
+                                    {searchResults.map(product => (
+                                        <Link
+                                            key={product.id}
+                                            href={`/product/${product.slug}`}
+                                            onClick={() => setIsSearchOpen(false)}
+                                            className="flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-gold/20 transition-all"
+                                        >
+                                            <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-white/10 flex-shrink-0">
+                                                <Image src={product.imageUrl} alt={product.name} fill className="object-cover" sizes="48px" />
+                                            </div>
+                                            <div className="min-w-0">
+                                                <p className="text-white font-medium text-sm truncate">{product.name}</p>
+                                                <p className="text-gold text-xs">₹{product.price}</p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            )}
+
+                            {searchQuery.trim() && searchResults.length === 0 && (
+                                <p className="text-white/40 text-center mt-8 text-sm">No fragrances found for &ldquo;{searchQuery}&rdquo;</p>
+                            )}
+
+                            {!searchQuery.trim() && (
+                                <p className="text-white/30 text-center mt-8 text-sm">Start typing to search our collection...</p>
+                            )}
                         </div>
                     </motion.div>
                 )}

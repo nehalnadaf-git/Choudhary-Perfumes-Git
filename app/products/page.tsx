@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
-import { getProducts } from "@/lib/products";
 import { Product } from "@/lib/types";
 import { FiSearch, FiFilter } from "react-icons/fi";
 import clsx from "clsx";
@@ -22,15 +21,20 @@ function ProductsContent() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        getProducts().then(data => {
-            setProducts(data);
-            setIsLoading(false);
-        });
+        fetch('/api/products')
+            .then(res => res.json())
+            .then(data => {
+                if (Array.isArray(data)) setProducts(data);
+                setIsLoading(false);
+            })
+            .catch(() => setIsLoading(false));
     }, []);
 
-    // Read filter from URL query params on mount & when params change
+    // Read filter and search from URL query params
     useEffect(() => {
         const urlFilter = searchParams.get('filter') || searchParams.get('category');
+        const urlSearch = searchParams.get('search');
+        if (urlSearch) setSearchQuery(urlSearch);
         if (urlFilter) {
             // Normalize the value
             const normalized = urlFilter.toLowerCase().trim();
@@ -62,7 +66,7 @@ function ProductsContent() {
             if (filter === 'featured') return product.featured;
             return product.category === filter;
         });
-    }, [filter, searchQuery]);
+    }, [filter, searchQuery, products]);
 
     // Categories for filter buttons
     const categories = [
