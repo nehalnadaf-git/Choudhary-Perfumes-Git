@@ -48,7 +48,7 @@ export default async function Home() {
       <Hero />
 
       {/* ─── Shop by Category ─── */}
-      <section className="relative pt-12 md:pt-16 pb-16 md:pb-24 bg-gradient-to-b from-gray-50 to-white">
+      <section className="relative pt-12 md:pt-16 pb-8 md:pb-12 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 md:mb-16">
             <p className="text-gold text-xs font-semibold tracking-[0.25em] uppercase mb-4">Explore Our Collections</p>
@@ -63,7 +63,7 @@ export default async function Home() {
       </section>
 
       {/* ─── Best Sellers ─── */}
-      <section className="py-16 md:py-24 bg-white relative">
+      <section className="py-10 md:py-14 bg-white relative">
         {/* Subtle background pattern */}
         <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, black 1px, transparent 0)', backgroundSize: '40px 40px' }} />
         <div className="container mx-auto px-4 relative z-10">
