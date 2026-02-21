@@ -2,7 +2,7 @@
 "use client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
+
 import { FaStar, FaQuoteLeft, FaWhatsapp } from "react-icons/fa";
 
 const reviews = [
@@ -104,7 +104,6 @@ export default function ReviewsPage() {
             </section>
 
             <Footer />
-            <WhatsAppButton />
         </main>
     );
 }

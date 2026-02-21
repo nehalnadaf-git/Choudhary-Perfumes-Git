@@ -36,6 +36,16 @@ yarn-error.log*
 # vercel
 .vercel
 
+# local data & migration scripts (data lives in Supabase now)
+data/
+scripts/
+
+# backup files
+*.bak
+
+# dev notes
+MOBILE_ENHANCEMENTS.md
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

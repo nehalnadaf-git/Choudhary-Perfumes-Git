@@ -1,10 +1,12 @@
 
 "use client";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/lib/types";
-import { FaWhatsapp, FaEye } from "react-icons/fa";
-import { motion } from "framer-motion";
+import { FiPlus, FiChevronDown } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "@/context/CartContext";
 
 interface ProductCardProps {
     product: Product;
@@ -12,85 +14,176 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product, onQuickView }: ProductCardProps) => {
+    const { addToCart } = useCart();
+    const hasVolumes = product.volumes && product.volumes.length > 0;
+    const [selectedVolumeIndex, setSelectedVolumeIndex] = useState(0);
+    const [isVolumeOpen, setIsVolumeOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
-    // Construct WhatsApp message
-    const message = `Hi Choudhary Perfumes! 👋
+    // Current display price & volume
+    const currentPrice = hasVolumes
+        ? product.volumes![selectedVolumeIndex].price
+        : product.price;
+    const currentVolume = hasVolumes
+        ? product.volumes![selectedVolumeIndex].volume
+        : product.volume;
 
-I'm interested in:
-📦 Product: ${product.name}
-💎 Brand: ${product.brand}
-📏 Size: ${product.volume}
-💰 Price: ₹${product.price}
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setIsVolumeOpen(false);
+            }
+        };
+        if (isVolumeOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [isVolumeOpen]);
 
-Please confirm availability and share delivery details.
-Thank you!`;
-
-    const whatsappLink = `https://wa.me/916363278962?text=${encodeURIComponent(message)}`;
+    const handleAddToCart = () => {
+        const cartProduct = hasVolumes
+            ? {
+                ...product,
+                id: `${product.id}-${currentVolume}`,
+                price: currentPrice,
+                volume: currentVolume,
+            }
+            : product;
+        addToCart(cartProduct);
+    };
 
     return (
         <motion.div
-            whileHover={{ y: -10 }}
-            className="group relative bg-white rounded-xl overflow-hidden shadow-dark-sm hover:shadow-gold-lg transition-all duration-300 border border-gray-100"
+            whileHover={{ y: -4 }}
+            className="group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col"
         >
             {/* Image Container */}
-            <div className="relative aspect-square overflow-hidden bg-gray-50">
+            <div className="relative w-full aspect-square shrink-0 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
                 {product.imageUrl ? (
-                    <Image
-                        src={product.imageUrl}
-                        alt={product.name}
-                        fill
-                        className="object-cover object-center group-hover:scale-110 transition-transform duration-700"
-                    />
+                    <Link href={`/product/${product.slug}`} className="block w-full h-full">
+                        <Image
+                            src={product.imageUrl}
+                            alt={product.name}
+                            fill
+                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                            className="object-contain object-center group-hover:scale-105 transition-transform duration-500"
+                        />
+                    </Link>
                 ) : (
                     <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
                         No Image
                     </div>
                 )}
 
-                {/* Overlay actions */}
-                <div className="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-black/80 to-transparent flex justify-center gap-3">
-                    {onQuickView && (
-                        <button
-                            onClick={() => onQuickView(product)}
-                            className="p-3 bg-white text-black rounded-full hover:bg-gold hover:text-white transition-colors shadow-lg"
-                            title="Quick View"
-                        >
-                            <FaEye />
-                        </button>
-                    )}
-                    <a
-                        href={whatsappLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-3 bg-green-500 text-white rounded-full hover:bg-green-600 transition-colors shadow-lg"
-                        title="Buy on WhatsApp"
-                    >
-                        <FaWhatsapp size={18} />
-                    </a>
-                </div>
-
+                {/* Featured Badge */}
                 {product.featured && (
-                    <span className="absolute top-3 left-3 bg-gold text-white text-xs font-bold px-3 py-1 rounded-full shadow-md uppercase tracking-wide">
-                        Featured
+                    <span className="absolute top-2.5 left-2.5 md:top-3 md:left-3 bg-black/60 backdrop-blur-md text-gold px-2.5 py-1 text-[8px] md:text-[10px] font-bold uppercase tracking-widest rounded-full border border-gold/20 shadow-sm z-10">
+                        ★ Featured
                     </span>
-                )}
-                {!product.inStock && (
-                    <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-10">
-                        <span className="bg-black text-white px-4 py-2 text-sm font-bold uppercase tracking-widest">Out of Stock</span>
-                    </div>
                 )}
             </div>
 
             {/* Content */}
-            <div className="p-4 text-center">
-                <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">{product.category}</p>
-                <h3 className="font-serif font-bold text-lg text-black mb-1 group-hover:text-gold transition-colors line-clamp-1">
-                    {product.name}
-                </h3>
-                <p className="text-sm text-gray-600 mb-3">{product.brand}</p>
-                <div className="flex items-center justify-center gap-2">
-                    <span className="text-gold font-bold text-lg">₹{product.price}</span>
-                    <span className="text-xs text-gray-400 line-through">₹{Math.round(product.price * 1.3)}</span>
+            <div className="p-3 md:p-4 flex-1 flex flex-col">
+                <Link href={`/product/${product.slug}`} className="block flex-1">
+                    <p className="text-[9px] md:text-[10px] text-gold/70 uppercase tracking-[0.15em] font-semibold mb-1">{product.category}</p>
+                    <h3 className="font-serif font-bold text-[13px] md:text-base text-black mb-0.5 group-hover:text-gold transition-colors line-clamp-2 leading-snug">
+                        {product.name}
+                    </h3>
+                    <p className="text-[11px] md:text-xs text-gray-400 mb-2 truncate">{product.brand}</p>
+                </Link>
+
+                {/* Volume Selector — Only for Attars */}
+                {hasVolumes && (
+                    <div className="relative mb-3" ref={dropdownRef}>
+                        <button
+                            onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setIsVolumeOpen(!isVolumeOpen);
+                            }}
+                            className={`w-full flex items-center justify-between gap-1 px-3 py-2 rounded-xl border transition-all duration-200 text-xs md:text-sm ${isVolumeOpen
+                                ? 'border-gold bg-gold/5 shadow-sm'
+                                : 'border-gray-200 bg-gray-50/80 hover:border-gold/40'
+                                }`}
+                        >
+                            <div className="flex items-center gap-1.5">
+                                <span className="text-[9px] md:text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Size</span>
+                                <span className="font-bold text-gray-900">{currentVolume}</span>
+                            </div>
+                            <FiChevronDown
+                                size={14}
+                                className={`text-gray-400 transition-transform duration-200 ${isVolumeOpen ? 'rotate-180 text-gold' : ''}`}
+                            />
+                        </button>
+
+                        {/* Dropdown */}
+                        <AnimatePresence>
+                            {isVolumeOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -6, scale: 0.96 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: -6, scale: 0.96 }}
+                                    transition={{ duration: 0.15, ease: "easeOut" }}
+                                    className="absolute bottom-full left-0 right-0 mb-2 bg-white rounded-xl border border-gray-100 shadow-xl z-50 overflow-hidden"
+                                >
+                                    <div className="p-1.5">
+                                        {product.volumes!.map((vol, idx) => (
+                                            <button
+                                                key={vol.volume}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    setSelectedVolumeIndex(idx);
+                                                    setIsVolumeOpen(false);
+                                                }}
+                                                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs md:text-sm transition-all duration-150 ${selectedVolumeIndex === idx
+                                                    ? 'bg-gold/10 text-black font-bold'
+                                                    : 'hover:bg-gray-50 text-gray-600'
+                                                    }`}
+                                            >
+                                                <span className="flex items-center gap-2">
+                                                    <span
+                                                        className={`w-2 h-2 rounded-full transition-colors ${selectedVolumeIndex === idx ? 'bg-gold' : 'bg-gray-200'
+                                                            }`}
+                                                    />
+                                                    {vol.volume}
+                                                </span>
+                                                <span className={`font-bold ${selectedVolumeIndex === idx ? 'text-gold' : 'text-gray-900'}`}>
+                                                    ₹{vol.price}
+                                                </span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                )}
+
+
+
+                {/* Price + Add to Cart */}
+                <div className="flex items-center justify-between mt-auto pt-2 border-t border-gray-50">
+                    <div className="flex flex-col">
+                        <span className="text-gold font-bold text-base md:text-xl leading-tight">₹{currentPrice}</span>
+                        <span className="text-[10px] md:text-xs text-gray-400 line-through">₹{Math.round(currentPrice * 1.3)}</span>
+                    </div>
+
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleAddToCart();
+                        }}
+                        className="w-9 h-9 md:w-11 md:h-11 bg-black text-white rounded-full flex items-center justify-center hover:bg-gold hover:text-black transition-all shadow-md active:scale-90 shrink-0"
+                        title="Add to Cart"
+                        aria-label="Add to Cart"
+                    >
+                        <FiPlus size={16} className="md:hidden" />
+                        <FiPlus size={20} className="hidden md:block" />
+                    </button>
                 </div>
             </div>
         </motion.div>

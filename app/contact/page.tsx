@@ -2,126 +2,152 @@
 "use client";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
-import { FaWhatsapp, FaInstagram, FaMapMarkerAlt, FaEnvelope, FaPhone } from "react-icons/fa";
+import { FaWhatsapp, FaInstagram, FaMapMarkerAlt, FaEnvelope, FaPhone, FaClock } from "react-icons/fa";
 
 export default function ContactPage() {
     return (
-        <main className="min-h-screen bg-gray-50">
+        <main className="min-h-screen bg-white">
             <Header />
 
-            {/* Header */}
-            <div className="bg-black text-white pt-32 pb-16 px-4">
-                <div className="container mx-auto text-center">
-                    <h1 className="text-4xl md:text-6xl font-serif font-bold mb-4">Get in Touch</h1>
-                    <p className="text-gray-400 max-w-xl mx-auto text-lg font-light">
-                        We're here to help you find your perfect fragrance.
+            {/* Hero Section */}
+            <div className="relative bg-black pt-28 pb-12 md:pt-40 md:pb-28 px-4 overflow-hidden">
+                <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1615634260167-c8cdede054de?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black" />
+                <div className="container mx-auto text-center relative z-10">
+                    <p className="text-gold text-xs md:text-base font-bold uppercase tracking-[0.2em] mb-2 md:mb-4">We'd Love to Hear From You</p>
+                    <h1 className="text-3xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-3 md:mb-6">Get in Touch</h1>
+                    <p className="text-gray-400 max-w-xl mx-auto text-base md:text-xl font-light leading-relaxed px-4">
+                        Whether you need a fragrance recommendation or have a question about your order, our team is here to assist you.
                     </p>
                 </div>
             </div>
 
-            <section className="py-20 container mx-auto px-4">
-                <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            <section className="py-10 md:py-24 container mx-auto px-4">
+                <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 max-w-7xl mx-auto items-start">
 
-                    {/* Contact Info */}
-                    <div className="space-y-8">
-                        <div>
-                            <h2 className="text-3xl font-serif font-bold mb-6 text-black">Contact Information</h2>
-                            <p className="text-gray-600 mb-8">
-                                Have questions about our products or need a recommendation? creating a custom gift set? Reach out to us directly.
+                    {/* Left Column: Contact Details */}
+                    <div>
+                        <div className="mb-8 md:mb-12 text-center md:text-left">
+                            <h2 className="text-2xl md:text-4xl font-serif font-bold mb-3 md:mb-4 text-black">Contact Information</h2>
+                            <p className="text-gray-500 leading-relaxed text-sm md:text-lg font-light">
+                                Visit our store to experience our collection in person, or reach out to us via phone or email for personalized assistance.
                             </p>
                         </div>
 
-                        <div className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
                             <ContactCard
-                                icon={<FaWhatsapp className="text-2xl" />}
-                                title="Chat on WhatsApp"
+                                icon={<FaWhatsapp />}
+                                title="WhatsApp Support"
                                 value="+91 6363 278 962"
-                                action="Chat Now"
+                                subtext="Available 24/7"
                                 href="https://wa.me/916363278962"
-                                color="bg-green-50 text-green-600 border-green-200"
                             />
                             <ContactCard
-                                icon={<FaPhone className="text-2xl" />}
-                                title="Call Us"
+                                icon={<FaPhone />}
+                                title="Phone Call"
                                 value="+91 6363 278 962"
-                                action="Call Now"
+                                subtext="Mon - Sat, 10am - 9pm"
                                 href="tel:+916363278962"
-                                color="bg-blue-50 text-blue-600 border-blue-200"
                             />
                             <ContactCard
-                                icon={<FaMapMarkerAlt className="text-2xl" />}
+                                icon={<FaMapMarkerAlt />}
                                 title="Visit Our Store"
-                                value="Madani Colony near Akshaya Park, Hubli"
-                                action="Get Directions"
+                                value="Madani Colony, Hubli"
+                                subtext="Near Akshaya Park"
                                 href="https://maps.google.com/?q=Choudhary+Perfumes+Madani+Colony+Hubli"
-                                color="bg-orange-50 text-orange-600 border-orange-200"
                             />
                             <ContactCard
-                                icon={<FaInstagram className="text-2xl" />}
+                                icon={<FaInstagram />}
                                 title="Follow Us"
                                 value="@choudharyperfumes"
-                                action="View Profile"
+                                subtext="For latest updates"
                                 href="https://instagram.com/choudharyperfumes"
-                                color="bg-pink-50 text-pink-600 border-pink-200"
                             />
                         </div>
                     </div>
 
-                    {/* Contact Form */}
-                    <div className="bg-white p-8 md:p-10 rounded-2xl shadow-lg border border-gray-100">
-                        <h3 className="text-2xl font-serif font-bold mb-6">Send a Message</h3>
-                        <form className="space-y-6">
-                            <div className="grid md:grid-cols-2 gap-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                                    <input type="text" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-colors" placeholder="Your Name" />
+                    {/* Right Column: Message Form */}
+                    <div className="bg-gray-50 p-6 md:p-12 rounded-3xl border border-gray-100 relative overflow-hidden mt-4 md:mt-0">
+
+                        {/* Decorative Background Element */}
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+
+                        <div className="relative z-10">
+                            <h3 className="text-xl md:text-3xl font-serif font-bold mb-2">Send us a Message</h3>
+                            <p className="text-gray-500 mb-6 md:mb-8 font-light text-sm md:text-base">We usually respond within a few hours.</p>
+
+                            <form className="space-y-4 md:space-y-6">
+                                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Your Name</label>
+                                        <input
+                                            type="text"
+                                            className="w-full px-4 py-3 md:px-5 md:py-4 bg-white border border-gray-200 rounded-xl focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base"
+                                            placeholder="John Doe"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Phone Number</label>
+                                        <input
+                                            type="tel"
+                                            className="w-full px-4 py-3 md:px-5 md:py-4 bg-white border border-gray-200 rounded-xl focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base"
+                                            placeholder="+91..."
+                                        />
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
-                                    <input type="tel" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-colors" placeholder="Mobile Number" />
+                                <div className="space-y-1">
+                                    <label className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Subject</label>
+                                    <div className="relative">
+                                        <select className="w-full px-4 py-3 md:px-5 md:py-4 bg-white border border-gray-200 rounded-xl focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-all appearance-none font-medium cursor-pointer text-sm md:text-base">
+                                            <option>General Inquiry</option>
+                                            <option>Product Recommendation</option>
+                                            <option>Order Support</option>
+                                            <option>Wholesale / Bulk Order</option>
+                                        </select>
+                                        <div className="absolute right-4 md:right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                            T
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-                                <select className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-colors">
-                                    <option>Product Inquiry</option>
-                                    <option>Order Status</option>
-                                    <option>General Question</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
-                                <textarea rows={4} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-colors" placeholder="How can we help you?" />
-                            </div>
-                            <button className="w-full bg-black text-white py-4 rounded-lg font-bold hover:bg-gold hover:text-black transition-all duration-300">
-                                Send Message
-                            </button>
-                        </form>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Message</label>
+                                    <textarea
+                                        rows={4}
+                                        className="w-full px-4 py-3 md:px-5 md:py-4 bg-white border border-gray-200 rounded-xl focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-all placeholder:text-gray-300 resize-none font-medium text-sm md:text-base"
+                                        placeholder="How can we help you find your signature scent?"
+                                    />
+                                </div>
+                                <button className="w-full bg-black text-white py-3.5 md:py-5 rounded-xl font-bold text-base md:text-lg hover:bg-gold hover:text-black transition-all duration-300 shadow-lg hover:shadow-gold/20 mt-2 tracking-wide uppercase">
+                                    Send Message
+                                </button>
+                            </form>
+                        </div>
                     </div>
 
                 </div>
             </section>
 
             <Footer />
-            <WhatsAppButton />
         </main>
     )
 }
 
-function ContactCard({ icon, title, value, action, href, color }: any) {
+function ContactCard({ icon, title, value, subtext, href }: any) {
     return (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={`flex items-center p-4 border rounded-xl transition-transform hover:-translate-y-1 hover:shadow-md ${color} bg-opacity-50 border-opacity-50 group`}>
-            <div className={`p-3 rounded-full bg-white shadow-sm mr-4 text-xl`}>
+        <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-start gap-4 p-5 md:p-6 bg-white border border-gray-100 rounded-2xl hover:border-gold/30 hover:shadow-lg transition-all duration-300 h-full"
+        >
+            <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center text-gold text-xl shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-md">
                 {icon}
             </div>
-            <div className="flex-1">
-                <h4 className="font-bold text-gray-900">{title}</h4>
-                <p className="text-sm text-gray-600">{value}</p>
+            <div>
+                <h4 className="font-bold text-gray-900 group-hover:text-gold transition-colors text-lg mb-1">{title}</h4>
+                <p className="font-medium text-gray-800 mb-0.5">{value}</p>
+                <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">{subtext}</p>
             </div>
-            <span className="text-sm font-medium underline opacity-0 group-hover:opacity-100 transition-opacity">
-                {action}
-            </span>
         </a>
     )
 }

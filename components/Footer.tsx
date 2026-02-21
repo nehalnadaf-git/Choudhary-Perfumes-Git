@@ -4,6 +4,8 @@
 import Link from "next/link";
 import { FaWhatsapp, FaInstagram, FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
 
+import Image from "next/image";
+
 const Footer = () => {
     return (
         <footer className="bg-black text-white pt-16 pb-8 border-t border-white/10">
@@ -11,7 +13,20 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
                     {/* Brand Column */}
                     <div>
-                        <h2 className="text-2xl font-serif font-bold text-gold mb-4">CHOUDHARY PERFUMES</h2>
+                        <Link href="/" className="inline-flex items-center gap-2 mb-6 group">
+                            <div className="relative w-12 h-12">
+                                <Image
+                                    src="/images/favicon/logo.png"
+                                    alt="Choudhary Perfumes"
+                                    fill
+                                    className="object-contain"
+                                />
+                            </div>
+                            <div className="flex flex-col">
+                                <h2 className="text-xl font-serif font-bold text-gold tracking-wider leading-none group-hover:text-white transition-colors">CHOUDHARY</h2>
+                                <span className="text-[10px] font-sans tracking-[0.3em] text-white leading-none mt-1">PERFUMES</span>
+                            </div>
+                        </Link>
                         <p className="text-gray-400 text-sm leading-relaxed mb-6">
                             "Perfume follows you everywhere you go"
                             <br /><br />
@@ -31,13 +46,19 @@ const Footer = () => {
                     <div>
                         <h3 className="text-lg font-serif font-semibold mb-6 text-white border-b border-gold/30 inline-block pb-1">Explore</h3>
                         <ul className="space-y-3">
-                            {['Home', 'Products', 'About Us', 'Reviews', 'Contact', 'FAQ'].map((item) => (
-                                <li key={item}>
+                            {[
+                                { name: 'Home', href: '/' },
+                                { name: 'Products', href: '/products' },
+                                { name: 'About Us', href: '/about' },
+                                { name: 'Contact', href: '/contact' },
+                                { name: 'FAQ', href: '/faq' },
+                            ].map((item) => (
+                                <li key={item.name}>
                                     <Link
-                                        href={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '-')}`}
+                                        href={item.href}
                                         className="text-gray-400 hover:text-gold text-sm transition-colors"
                                     >
-                                        {item}
+                                        {item.name}
                                     </Link>
                                 </li>
                             ))}
@@ -48,10 +69,9 @@ const Footer = () => {
                     <div>
                         <h3 className="text-lg font-serif font-semibold mb-6 text-white border-b border-gold/30 inline-block pb-1">Collections</h3>
                         <ul className="space-y-3">
-                            <li><Link href="/products?category=attar" className="text-gray-400 hover:text-gold text-sm transition-colors">Traditional Attars</Link></li>
-                            <li><Link href="/products?category=perfume" className="text-gray-400 hover:text-gold text-sm transition-colors">Designer Perfumes</Link></li>
-                            <li><Link href="/products?filter=best-sellers" className="text-gray-400 hover:text-gold text-sm transition-colors">Best Sellers</Link></li>
-                            <li><Link href="/products?filter=featured" className="text-gray-400 hover:text-gold text-sm transition-colors">Featured Collection</Link></li>
+                            <li><Link href="/products?filter=attar" className="text-gray-400 hover:text-gold text-sm transition-colors">Traditional Attars</Link></li>
+                            <li><Link href="/products?filter=perfume" className="text-gray-400 hover:text-gold text-sm transition-colors">Designer Perfumes</Link></li>
+                            <li><Link href="/products?filter=featured" className="text-gray-400 hover:text-gold text-sm transition-colors">Best Sellers</Link></li>
                         </ul>
                     </div>
 
@@ -71,10 +91,7 @@ const Footer = () => {
                                 <FaEnvelope className="text-gold shrink-0" />
                                 <span>info@choudharyperfumes.com</span>
                             </li>
-                            <li className="text-sm text-gray-500 pt-2">
-                                <span className="block text-gold mb-1">Business Hours:</span>
-                                Mon-Sat: 10AM - 9PM<br />Sun: 11AM - 8PM
-                            </li>
+
                         </ul>
                     </div>
                 </div>
@@ -82,10 +99,9 @@ const Footer = () => {
                 {/* Bottom Bar */}
                 <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-xs text-gray-600">
                     <p>© {new Date().getFullYear()} Choudhary Perfumes. All rights reserved.</p>
-                    <p className="flex items-center">Made with <span className="text-red-500 mx-1">❤️</span> in Hubli, Karnataka</p>
                     <div className="flex space-x-6">
-                        <Link href="/privacy" className="hover:text-gold">Privacy Policy</Link>
-                        <Link href="/terms" className="hover:text-gold">Terms & Conditions</Link>
+                        <Link href="/faq" className="hover:text-gold">FAQ</Link>
+                        <Link href="/contact" className="hover:text-gold">Contact Us</Link>
                     </div>
                 </div>
             </div>

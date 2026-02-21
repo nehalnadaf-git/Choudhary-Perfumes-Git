@@ -1,4 +1,9 @@
 
+export interface VolumeOption {
+    volume: string;
+    price: number;
+}
+
 export interface Product {
     id: string;
     name: string;
@@ -8,15 +13,11 @@ export interface Product {
     type?: string;
     volume: string;
     price: number;
+    volumes?: VolumeOption[];
     description: string;
     featured: boolean;
     inStock: boolean;
     imageUrl: string;
-    notes?: {
-        top: string;
-        heart: string;
-        base: string;
-    };
     gender?: 'men' | 'women' | 'unisex';
 }
 
@@ -28,4 +29,5 @@ export interface Review {
     productName: string;
     comment: string;
     verified: boolean;
+    avatarColor?: string;
 }
