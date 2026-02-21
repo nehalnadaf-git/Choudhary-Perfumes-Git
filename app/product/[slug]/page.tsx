@@ -119,7 +119,7 @@ export default function ProductDetailPage() {
                         />
                         {product.featured && (
                             <span className="absolute top-5 left-5 md:top-6 md:left-6 bg-black/60 backdrop-blur-md text-gold px-4 py-1.5 text-xs md:text-sm font-bold uppercase tracking-widest rounded-full border border-gold/20 shadow-sm">
-                                ★ Featured
+                                ★ Best Seller
                             </span>
                         )}
                     </motion.div>

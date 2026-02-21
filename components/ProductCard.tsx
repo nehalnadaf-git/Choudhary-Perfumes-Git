@@ -76,10 +76,10 @@ const ProductCard = ({ product, onQuickView }: ProductCardProps) => {
                     </div>
                 )}
 
-                {/* Featured Badge */}
+                {/* Best Seller Badge */}
                 {product.featured && (
                     <span className="absolute top-2.5 left-2.5 md:top-3 md:left-3 bg-black/60 backdrop-blur-md text-gold px-2.5 py-1 text-[8px] md:text-[10px] font-bold uppercase tracking-widest rounded-full border border-gold/20 shadow-sm z-10">
-                        ★ Featured
+                        ★ Best Seller
                     </span>
                 )}
             </div>
