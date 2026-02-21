@@ -280,7 +280,7 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* ── Desktop Product Grid ── */}
-                <div className="grid grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                     {loading ? (
                         <div className="col-span-full py-24 text-center">
                             <div className="relative w-14 h-14 mx-auto mb-6">
