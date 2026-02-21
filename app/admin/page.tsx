@@ -648,9 +648,9 @@ function MobileProductCard({ product, onEdit, onDelete }: { product: Product; on
 function DesktopProductCard({ product, onEdit, onDelete }: { product: Product; onEdit: () => void; onDelete: () => void }) {
     return (
         <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-black/5 flex flex-col hover:-translate-y-1">
-            <div className="relative h-52 w-full bg-gradient-to-br from-gray-100 to-gray-50 overflow-hidden">
+            <div className="relative aspect-square w-full bg-gradient-to-br from-gray-50 to-white overflow-hidden">
                 {product.imageUrl ? (
-                    <Image src={product.imageUrl} alt={product.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                    <Image src={product.imageUrl} alt={product.name} fill className="object-contain p-3 group-hover:scale-105 transition-transform duration-700" />
                 ) : (
                     <div className="flex items-center justify-center h-full">
                         <FiBox size={48} className="text-black/10" />
