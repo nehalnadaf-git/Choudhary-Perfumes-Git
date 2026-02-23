@@ -669,12 +669,12 @@ function DesktopProductCard({ product, onEdit, onDelete }: { product: Product; o
                         <h3 className="text-base font-serif font-bold text-black tracking-tight group-hover:text-[#D0AB64] transition-colors truncate">{product.name}</h3>
                     </div>
                     <div className="text-right flex-shrink-0 flex flex-col items-end">
-                        <div className="flex items-center gap-1.5 mb-1">
+                        <p className="text-base font-bold text-black mb-1">₹{product.price}</p>
+                        <div className="flex items-center gap-1.5">
                             {product.featured && <span className="w-1.5 h-1.5 rounded-full bg-[#D0AB64]" title="Bestseller" />}
                             <span className={`w-1.5 h-1.5 rounded-full ${product.inStock ? 'bg-emerald-500' : 'bg-red-500'}`} title={product.inStock ? 'In Stock' : 'Out of Stock'} />
-                            <p className="text-base font-bold text-black ml-0.5">₹{product.price}</p>
+                            <p className="text-[9px] text-black/30 font-medium uppercase tracking-wide">{product.category}</p>
                         </div>
-                        <p className="text-[9px] text-black/30 font-medium uppercase tracking-wide">{product.category}</p>
                     </div>
                 </div>
 
