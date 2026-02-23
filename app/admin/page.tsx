@@ -615,11 +615,13 @@ function MobileProductCard({ product, onEdit, onDelete }: { product: Product; on
             <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5 mb-0.5">
                     <h3 className="text-[13px] font-serif font-bold text-black truncate leading-tight">{product.name}</h3>
-                    {product.featured && <FiStar size={10} className="text-[#D0AB64] flex-shrink-0" />}
                 </div>
                 <p className="text-[9px] uppercase tracking-[0.2em] text-black/35 font-semibold truncate">{product.brand}</p>
                 <div className="flex items-center gap-2 mt-1">
-                    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${product.inStock ? 'bg-emerald-500' : 'bg-red-500'}`} />
+                    <div className="flex items-center gap-1">
+                        {product.featured && <span className="w-1.5 h-1.5 rounded-full flex-shrink-0 bg-[#D0AB64]" title="Bestseller" />}
+                        <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${product.inStock ? 'bg-emerald-500' : 'bg-red-500'}`} title={product.inStock ? 'In Stock' : 'Out of Stock'} />
+                    </div>
                     <span className="text-xs font-bold text-black">₹{product.price}</span>
                     <span className="text-[8px] uppercase tracking-widest text-black/25 font-bold">{product.category}</span>
                 </div>
@@ -657,16 +659,7 @@ function DesktopProductCard({ product, onEdit, onDelete }: { product: Product; o
                     </div>
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap z-10">
-                    <span className={`px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-full border shadow-sm bg-black/40 backdrop-blur-md ${product.inStock ? 'text-white border-white/10' : 'text-white/60 border-white/5'}`}>
-                        {product.inStock ? 'In Stock' : 'Sold Out'}
-                    </span>
-                    {product.featured && (
-                        <span className="px-2 py-0.5 text-[8px] font-bold uppercase tracking-widest rounded-full border border-[#D0AB64]/20 shadow-sm bg-black/40 backdrop-blur-md text-[#D0AB64]">
-                            ★ Bestseller
-                        </span>
-                    )}
-                </div>
+
             </div>
 
             <div className="p-5 flex-1 flex flex-col">
@@ -675,20 +668,17 @@ function DesktopProductCard({ product, onEdit, onDelete }: { product: Product; o
                         <p className="text-[9px] uppercase tracking-[0.4em] text-[#D0AB64] font-bold mb-1">{product.brand}</p>
                         <h3 className="text-base font-serif font-bold text-black tracking-tight group-hover:text-[#D0AB64] transition-colors truncate">{product.name}</h3>
                     </div>
-                    <div className="text-right flex-shrink-0">
-                        <p className="text-base font-bold text-black">₹{product.price}</p>
-                        <p className="text-[9px] text-black/30 font-medium uppercase tracking-wide mt-0.5">{product.category}</p>
+                    <div className="text-right flex-shrink-0 flex flex-col items-end">
+                        <div className="flex items-center gap-1.5 mb-1">
+                            {product.featured && <span className="w-1.5 h-1.5 rounded-full bg-[#D0AB64]" title="Bestseller" />}
+                            <span className={`w-1.5 h-1.5 rounded-full ${product.inStock ? 'bg-emerald-500' : 'bg-red-500'}`} title={product.inStock ? 'In Stock' : 'Out of Stock'} />
+                            <p className="text-base font-bold text-black ml-0.5">₹{product.price}</p>
+                        </div>
+                        <p className="text-[9px] text-black/30 font-medium uppercase tracking-wide">{product.category}</p>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 mb-5 flex-wrap">
-                    <span className="bg-black/5 px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest rounded-lg text-black/50">{product.gender}</span>
-                    {product.category === 'attar' && product.volumes && product.volumes.length > 0 && (
-                        <span className="bg-[#D0AB64]/10 px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest rounded-lg text-[#D0AB64]">
-                            {product.volumes.length} sizes
-                        </span>
-                    )}
-                </div>
+
 
                 <div className="mt-auto pt-4 border-t border-black/5 flex items-center justify-between gap-2">
                     <div className="flex gap-2 flex-1">
