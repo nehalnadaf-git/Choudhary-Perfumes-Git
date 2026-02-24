@@ -24,17 +24,17 @@ const CartDrawer = () => {
     if (pathname.startsWith("/admin")) return null;
 
     const handleCheckout = () => {
-        let message = `Hello Choudhary Perfumes,\n\nI would like to place the following order:\n\n`;
-        message += `------------------------------\n`;
+        const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+        let message = `Hi Choudhary Perfumes! 🌹\n\n`;
+        message += `I would like to order:\n\n`;
         cartItems.forEach((item, index) => {
             const subtotal = item.price * item.quantity;
             const volumeInfo = item.volume ? ` (${item.volume})` : '';
-            message += `${index + 1}. *${item.name}*${volumeInfo}\n`;
-            message += `   Qty: ${item.quantity} x ₹${item.price} = ₹${subtotal}\n\n`;
+            message += `${index + 1}. ${item.name}${volumeInfo} (x${item.quantity}) - ₹${subtotal}\n`;
         });
-        message += `------------------------------\n`;
-        message += `*Order Total: ₹${cartTotal}*\n\n`;
-        message += `Kindly confirm availability and share the delivery details.\nThank you!`;
+        message += `\nTotal Order Value: ₹${cartTotal}\n`;
+        message += `Total Items: ${itemCount}\n\n`;
+        message += `Please confirm availability and delivery details. Thanks! 🙏`;
 
         const whatsappUrl = `https://wa.me/916363278962?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, "_blank");
@@ -139,20 +139,23 @@ const CartDrawer = () => {
                         {/* Footer */}
                         {cartItems.length > 0 && (
                             <div className="p-6 border-t border-gray-100 bg-gray-50 space-y-4">
-                                <div className="flex justify-between items-center text-lg font-bold">
-                                    <span>Subtotal</span>
-                                    <span>₹{cartTotal}</span>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-sm text-gray-500">Subtotal ({cartItems.reduce((s, i) => s + i.quantity, 0)} items)</span>
+                                    <span className="text-xl font-bold">₹{cartTotal}</span>
                                 </div>
-                                <p className="text-xs text-gray-500 text-center">
+                                <p className="text-xs text-gray-400 text-center">
                                     Shipping & taxes calculated at checkout via WhatsApp
                                 </p>
                                 <button
                                     onClick={handleCheckout}
-                                    className="w-full bg-green-500 hover:bg-green-600 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                                    className="w-full bg-[#25D366] hover:bg-[#1EBE5A] text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 transition-all shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]"
                                 >
                                     <FaWhatsapp size={24} />
-                                    Checkout on WhatsApp
+                                    <span>Order on WhatsApp</span>
                                 </button>
+                                <p className="text-[10px] text-gray-400 text-center leading-relaxed">
+                                    Your order details will be pre-filled in WhatsApp for quick checkout
+                                </p>
                             </div>
                         )}
                     </motion.div>

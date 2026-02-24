@@ -82,7 +82,7 @@ export default function ProductDetailPage() {
         }
     };
 
-    const message = `Hello Choudhary Perfumes,\n\nI am interested in:\n\n*${product.name}* (${currentVolume}) x ${quantity}\nTotal: ₹${currentPrice * quantity}\n\nKindly confirm availability and delivery details.\nThank you!`;
+    const message = `Hi Choudhary Perfumes! 🌹\n\nI would like to order:\n\n1. ${product.name} (${currentVolume}) (x${quantity}) - ₹${currentPrice * quantity}\n\nTotal Order Value: ₹${currentPrice * quantity}\n\nPlease confirm availability and delivery details. Thanks! 🙏`;
     const whatsappLink = `https://wa.me/916363278962?text=${encodeURIComponent(message)}`;
 
     return (
