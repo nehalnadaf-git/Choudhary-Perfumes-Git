@@ -644,6 +644,14 @@ function MobileProductCard({ product, onEdit, onDelete }: { product: Product; on
 
             {/* Actions — right side */}
             <div className="flex items-center gap-1 flex-shrink-0">
+                <Link
+                    href={`/product/${product.slug}`}
+                    target="_blank"
+                    className="p-2 text-black/25 hover:text-[#D0AB64] transition-all"
+                    title="View in Shop"
+                >
+                    <FiExternalLink size={15} />
+                </Link>
                 <button
                     onClick={onEdit}
                     className="p-2 bg-[#1A1A1A] text-[#D0AB64] rounded-lg"
