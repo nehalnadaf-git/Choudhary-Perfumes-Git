@@ -696,7 +696,7 @@ function DesktopProductCard({ product, onEdit, onDelete }: { product: Product; o
                         </button>
                     </div>
                     <Link
-                        href={`/products/${product.slug}`}
+                        href={`/product/${product.slug}`}
                         target="_blank"
                         className="p-2.5 text-black/25 hover:text-[#D0AB64] hover:bg-[#D0AB64]/10 rounded-xl transition-all"
                         title="View in Shop"
