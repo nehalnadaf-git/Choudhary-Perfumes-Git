@@ -9,13 +9,16 @@ export async function PUT(
         const body = await request.json();
         const { id } = await params;
 
-        // 1. Update product
+        // Always sanitize slug
+        const rawSlug = body.slug || body.name;
+        const slug = rawSlug.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+
         const { data: updatedProduct, error: productError } = await supabase
             .from('products')
             .update({
                 name: body.name,
                 brand: body.brand,
-                slug: body.slug,
+                slug: slug,
                 price: body.price,
                 category: body.category,
                 gender: body.gender,

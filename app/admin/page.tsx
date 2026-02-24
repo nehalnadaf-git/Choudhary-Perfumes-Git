@@ -6,6 +6,14 @@ import { Product, VolumeOption } from '@/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
 
+function generateSlug(name: string): string {
+    return name
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+}
+
 const DEFAULT_ATTAR_VOLUMES: VolumeOption[] = [
     { volume: '5ml', price: 449 },
     { volume: '10ml', price: 799 },
@@ -340,7 +348,14 @@ export default function AdminDashboard() {
                             {/* Row 1: Name + Brand */}
                             <div className="grid grid-cols-2 gap-3 lg:gap-5">
                                 <FieldGroup label="Name">
-                                    <FormInput required value={currentProduct.name || ''} onChange={v => setCurrentProduct({ ...currentProduct, name: v })} placeholder="Royal Musk" />
+                                    <FormInput required value={currentProduct.name || ''} onChange={v => {
+                                        const updated: Partial<Product> = { ...currentProduct, name: v };
+                                        // Auto-generate slug from name (only if slug hasn't been manually customized)
+                                        if (!currentProduct.id || currentProduct.slug === generateSlug(currentProduct.name || '')) {
+                                            updated.slug = generateSlug(v);
+                                        }
+                                        setCurrentProduct(updated);
+                                    }} placeholder="Royal Musk" />
                                 </FieldGroup>
                                 <FieldGroup label="Brand">
                                     <FormInput required value={currentProduct.brand || ''} onChange={v => setCurrentProduct({ ...currentProduct, brand: v })} placeholder="Choudhary" />
@@ -350,7 +365,7 @@ export default function AdminDashboard() {
                             {/* Row 2: Slug + Price */}
                             <div className="grid grid-cols-2 gap-3 lg:gap-5">
                                 <FieldGroup label="Slug">
-                                    <FormInput required value={currentProduct.slug || ''} onChange={v => setCurrentProduct({ ...currentProduct, slug: v })} placeholder="royal-musk" />
+                                    <FormInput required value={currentProduct.slug || ''} onChange={v => setCurrentProduct({ ...currentProduct, slug: generateSlug(v) })} placeholder="royal-musk" />
                                 </FieldGroup>
                                 <FieldGroup label="Price (₹)">
                                     <FormInput type="number" required value={String(currentProduct.price || '')} onChange={v => setCurrentProduct({ ...currentProduct, price: Number(v) })} placeholder="799" />

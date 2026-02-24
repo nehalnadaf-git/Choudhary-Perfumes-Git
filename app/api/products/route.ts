@@ -52,8 +52,9 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
         }
 
-        // Auto-generate slug if missing
-        const slug = body.slug || body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        // Always sanitize slug - generate from name if missing, sanitize if provided
+        const rawSlug = body.slug || body.name;
+        const slug = rawSlug.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
         // 1. Insert product
         const { data: insertedProduct, error: productError } = await supabase
