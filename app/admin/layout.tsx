@@ -7,7 +7,6 @@ import { FiBox, FiShoppingBag, FiLogOut, FiMenu, FiX, FiHome, FiChevronRight, Fi
 
 const NAV_ITEMS = [
     { href: '/admin', icon: FiBox, label: 'Products', exact: true },
-    { href: '/admin/orders', icon: FiShoppingBag, label: 'Orders', exact: false },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

@@ -1,10 +1,24 @@
 
 "use client";
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { FaWhatsapp, FaInstagram, FaMapMarkerAlt, FaEnvelope, FaPhone, FaClock } from "react-icons/fa";
+import { FiChevronDown } from "react-icons/fi";
 
 export default function ContactPage() {
+    const [name, setName] = useState('');
+    const [phone, setPhone] = useState('');
+    const [subject, setSubject] = useState('General Inquiry');
+    const [message, setMessage] = useState('');
+
+    const handleSendMessage = (e: React.FormEvent) => {
+        e.preventDefault();
+        const whatsappMessage = `Hello Choudhary Perfumes,\n\nName: ${name}\nPhone: ${phone}\nSubject: ${subject}\n\nMessage:\n${message}\n\nThank you!`;
+        const url = `https://wa.me/916363278962?text=${encodeURIComponent(whatsappMessage)}`;
+        window.open(url, '_blank');
+    };
+
     return (
         <main className="min-h-screen bg-white">
             <Header />
@@ -76,12 +90,15 @@ export default function ContactPage() {
                             <h3 className="text-xl md:text-3xl font-serif font-bold mb-2">Send us a Message</h3>
                             <p className="text-gray-500 mb-6 md:mb-8 font-light text-sm md:text-base">We usually respond within a few hours.</p>
 
-                            <form className="space-y-4 md:space-y-6">
+                            <form onSubmit={handleSendMessage} className="space-y-4 md:space-y-6">
                                 <div className="grid md:grid-cols-2 gap-4 md:gap-6">
                                     <div className="space-y-1">
                                         <label className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Your Name</label>
                                         <input
                                             type="text"
+                                            required
+                                            value={name}
+                                            onChange={e => setName(e.target.value)}
                                             className="w-full px-4 py-3 md:px-5 md:py-4 bg-white border border-gray-200 rounded-xl focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base"
                                             placeholder="John Doe"
                                         />
@@ -90,6 +107,8 @@ export default function ContactPage() {
                                         <label className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Phone Number</label>
                                         <input
                                             type="tel"
+                                            value={phone}
+                                            onChange={e => setPhone(e.target.value)}
                                             className="w-full px-4 py-3 md:px-5 md:py-4 bg-white border border-gray-200 rounded-xl focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-all placeholder:text-gray-300 font-medium text-sm md:text-base"
                                             placeholder="+91..."
                                         />
@@ -98,14 +117,18 @@ export default function ContactPage() {
                                 <div className="space-y-1">
                                     <label className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Subject</label>
                                     <div className="relative">
-                                        <select className="w-full px-4 py-3 md:px-5 md:py-4 bg-white border border-gray-200 rounded-xl focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-all appearance-none font-medium cursor-pointer text-sm md:text-base">
+                                        <select
+                                            value={subject}
+                                            onChange={e => setSubject(e.target.value)}
+                                            className="w-full px-4 py-3 md:px-5 md:py-4 bg-white border border-gray-200 rounded-xl focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-all appearance-none font-medium cursor-pointer text-sm md:text-base"
+                                        >
                                             <option>General Inquiry</option>
                                             <option>Product Recommendation</option>
                                             <option>Order Support</option>
                                             <option>Wholesale / Bulk Order</option>
                                         </select>
                                         <div className="absolute right-4 md:right-5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                                            T
+                                            <FiChevronDown size={18} />
                                         </div>
                                     </div>
                                 </div>
@@ -113,11 +136,17 @@ export default function ContactPage() {
                                     <label className="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">Message</label>
                                     <textarea
                                         rows={4}
+                                        required
+                                        value={message}
+                                        onChange={e => setMessage(e.target.value)}
                                         className="w-full px-4 py-3 md:px-5 md:py-4 bg-white border border-gray-200 rounded-xl focus:ring-1 focus:ring-gold focus:border-gold outline-none transition-all placeholder:text-gray-300 resize-none font-medium text-sm md:text-base"
                                         placeholder="How can we help you find your signature scent?"
                                     />
                                 </div>
-                                <button className="w-full bg-black text-white py-3.5 md:py-5 rounded-xl font-bold text-base md:text-lg hover:bg-gold hover:text-black transition-all duration-300 shadow-lg hover:shadow-gold/20 mt-2 tracking-wide uppercase">
+                                <button
+                                    type="submit"
+                                    className="w-full bg-black text-white py-3.5 md:py-5 rounded-xl font-bold text-base md:text-lg hover:bg-gold hover:text-black transition-all duration-300 shadow-lg hover:shadow-gold/20 mt-2 tracking-wide uppercase"
+                                >
                                     Send Message
                                 </button>
                             </form>
