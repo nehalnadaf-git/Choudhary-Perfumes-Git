@@ -12,7 +12,6 @@ import { FaShieldAlt, FaGem, FaLeaf, FaWhatsapp } from "react-icons/fa";
 
 export default async function Home() {
   const products = await getProducts();
-  const bestSellers = products.filter(p => p.featured);
 
   const features = [
     {
@@ -70,7 +69,7 @@ export default async function Home() {
               Loved by our customers. These are the fragrances everyone&apos;s talking about.
             </p>
           </div>
-          <BestSellers products={bestSellers as any} />
+          <BestSellers />
           <div className="text-center mt-12">
             <Link
               href="/products"

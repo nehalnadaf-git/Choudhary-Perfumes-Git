@@ -1,19 +1,35 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Product } from "@/lib/types";
+import { getProducts } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
 import { FiPlus } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
 
-interface BestSellersProps {
-    products: Product[];
-}
-
-const BestSellers = ({ products }: BestSellersProps) => {
+const BestSellers = () => {
     const { addToCart } = useCart();
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        getProducts().then(allProducts => {
+            const featured = allProducts.filter(p => p.featured);
+            setProducts(featured);
+            setLoading(false);
+        });
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="flex justify-center py-12">
+                <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin" />
+            </div>
+        );
+    }
 
     if (products.length === 0) return null;
 
