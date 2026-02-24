@@ -24,11 +24,17 @@ const CartDrawer = () => {
     if (pathname.startsWith("/admin")) return null;
 
     const handleCheckout = () => {
-        let message = "Hi Choudhary Perfumes! 👋 I would like to order:\n\n";
+        let message = `Hello Choudhary Perfumes,\n\nI would like to place the following order:\n\n`;
+        message += `------------------------------\n`;
         cartItems.forEach((item, index) => {
-            message += `${index + 1}. *${item.name}* (x${item.quantity}) - ₹${item.price * item.quantity}\n`;
+            const subtotal = item.price * item.quantity;
+            const volumeInfo = item.volume ? ` (${item.volume})` : '';
+            message += `${index + 1}. *${item.name}*${volumeInfo}\n`;
+            message += `   Qty: ${item.quantity} x ₹${item.price} = ₹${subtotal}\n\n`;
         });
-        message += `\n*Total Order Value: ₹${cartTotal}*\n\nPlease confirm availability and delivery details. Thanks!`;
+        message += `------------------------------\n`;
+        message += `*Order Total: ₹${cartTotal}*\n\n`;
+        message += `Kindly confirm availability and share the delivery details.\nThank you!`;
 
         const whatsappUrl = `https://wa.me/916363278962?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, "_blank");
