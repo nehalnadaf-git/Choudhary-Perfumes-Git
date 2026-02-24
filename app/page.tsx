@@ -12,12 +12,7 @@ import { FaShieldAlt, FaGem, FaLeaf, FaWhatsapp } from "react-icons/fa";
 
 export default async function Home() {
   const products = await getProducts();
-  const bestSellers = [
-    products.find(p => p.slug === "mystic-amber-oudh"),
-    products.find(p => p.slug === "dior-homme-intense-edp"),
-    products.find(p => p.slug === "sandal-attar"),
-    products.find(p => p.slug === "oud-attar"),
-  ].filter(Boolean);
+  const bestSellers = products.filter(p => p.featured);
 
   const features = [
     {
