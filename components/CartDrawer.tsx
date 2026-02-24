@@ -25,8 +25,7 @@ const CartDrawer = () => {
 
     const handleCheckout = () => {
         const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-        let message = `Hi Choudhary Perfumes! 🌹\n\n`;
-        message += `I would like to order:\n\n`;
+        let message = `Hi Choudhary Perfumes!\n\nI would like to order:\n\n`;
         cartItems.forEach((item, index) => {
             const subtotal = item.price * item.quantity;
             const volumeInfo = item.volume ? ` (${item.volume})` : '';
@@ -34,7 +33,7 @@ const CartDrawer = () => {
         });
         message += `\nTotal Order Value: ₹${cartTotal}\n`;
         message += `Total Items: ${itemCount}\n\n`;
-        message += `Please confirm availability and delivery details. Thanks! 🙏`;
+        message += `Please confirm availability and delivery details. Thanks!`;
 
         const whatsappUrl = `https://wa.me/916363278962?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, "_blank");
