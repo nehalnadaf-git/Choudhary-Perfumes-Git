@@ -86,15 +86,7 @@ const BestSellers = () => {
         }
     };
 
-    // Auto-play
-    useEffect(() => {
-        if (totalPages <= 1) return;
-        const interval = setInterval(() => {
-            setDirection(1);
-            setCurrentPage(prev => (prev + 1) % totalPages);
-        }, 5000);
-        return () => clearInterval(interval);
-    }, [totalPages]);
+
 
     if (loading) {
         return (
@@ -215,8 +207,8 @@ const BestSellers = () => {
                         onClick={prevPage}
                         disabled={currentPage === 0}
                         className={`absolute top-1/2 -translate-y-1/2 -left-3 md:-left-5 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${currentPage === 0
-                                ? "bg-gray-100 text-gray-300 cursor-not-allowed"
-                                : "bg-white text-black hover:bg-gold hover:text-black border border-gray-200 hover:border-gold"
+                            ? "bg-gray-100 text-gray-300 cursor-not-allowed"
+                            : "bg-white text-black hover:bg-gold hover:text-black border border-gray-200 hover:border-gold"
                             }`}
                         aria-label="Previous products"
                     >
@@ -226,8 +218,8 @@ const BestSellers = () => {
                         onClick={nextPage}
                         disabled={currentPage === totalPages - 1}
                         className={`absolute top-1/2 -translate-y-1/2 -right-3 md:-right-5 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${currentPage === totalPages - 1
-                                ? "bg-gray-100 text-gray-300 cursor-not-allowed"
-                                : "bg-white text-black hover:bg-gold hover:text-black border border-gray-200 hover:border-gold"
+                            ? "bg-gray-100 text-gray-300 cursor-not-allowed"
+                            : "bg-white text-black hover:bg-gold hover:text-black border border-gray-200 hover:border-gold"
                             }`}
                         aria-label="Next products"
                     >
@@ -244,8 +236,8 @@ const BestSellers = () => {
                             key={i}
                             onClick={() => goToPage(i)}
                             className={`rounded-full transition-all duration-300 ${i === currentPage
-                                    ? "w-8 h-2.5 bg-gold"
-                                    : "w-2.5 h-2.5 bg-gray-300 hover:bg-gray-400"
+                                ? "w-8 h-2.5 bg-gold"
+                                : "w-2.5 h-2.5 bg-gray-300 hover:bg-gray-400"
                                 }`}
                             aria-label={`Go to page ${i + 1}`}
                         />
