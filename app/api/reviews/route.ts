@@ -62,3 +62,30 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
 }
+
+export async function DELETE(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+        return NextResponse.json({ error: 'Review ID is required' }, { status: 400 });
+    }
+
+    try {
+        const { error } = await supabase
+            .from('reviews')
+            .delete()
+            .eq('id', id);
+
+        if (error) {
+            console.error('Error deleting review:', error);
+            return NextResponse.json({ error: 'Failed to delete review' }, { status: 500 });
+        }
+
+        return NextResponse.json({ message: 'Review deleted successfully' });
+    } catch (e) {
+        console.error('API /api/reviews DELETE error:', e);
+        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    }
+}
+

@@ -3,11 +3,12 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FiBox, FiShoppingBag, FiLogOut, FiMenu, FiX, FiHome, FiChevronRight, FiSettings, FiImage } from 'react-icons/fi';
+import { FiBox, FiShoppingBag, FiLogOut, FiMenu, FiX, FiHome, FiChevronRight, FiSettings, FiImage, FiStar } from 'react-icons/fi';
 
 const NAV_ITEMS = [
     { href: '/admin', icon: FiBox, label: 'Products', exact: true },
     { href: '/admin/banners', icon: FiImage, label: 'Banners', exact: false },
+    { href: '/admin/reviews', icon: FiStar, label: 'Reviews', exact: false },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -18,6 +19,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const pageTitle = (() => {
         if (pathname === '/admin') return 'Products & Inventory';
         if (pathname === '/admin/banners') return 'Banner Management';
+        if (pathname === '/admin/reviews') return 'Review Management';
         if (pathname === '/admin/orders') return 'Order Management';
         return 'Dashboard';
     })();
