@@ -5,8 +5,10 @@ import Link from "next/link";
 import { FaWhatsapp, FaInstagram, FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
 
 import Image from "next/image";
+import { useSettings } from "@/context/SettingsContext";
 
 const Footer = () => {
+    const { whatsappNumber } = useSettings();
     return (
         <footer className="bg-black text-white pt-16 pb-8 border-t border-white/10">
             <div className="container mx-auto px-4 md:px-8">
@@ -36,7 +38,7 @@ const Footer = () => {
                             <a href="https://instagram.com/choudharyperfumes" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gold transition-colors">
                                 <FaInstagram size={24} />
                             </a>
-                            <a href="https://wa.me/916363278962" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-whatsapp transition-colors">
+                            <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-whatsapp transition-colors">
                                 <FaWhatsapp size={24} />
                             </a>
                         </div>

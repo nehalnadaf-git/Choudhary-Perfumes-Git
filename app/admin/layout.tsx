@@ -9,6 +9,7 @@ const NAV_ITEMS = [
     { href: '/admin', icon: FiBox, label: 'Products', exact: true },
     { href: '/admin/banners', icon: FiImage, label: 'Banners', exact: false },
     { href: '/admin/reviews', icon: FiStar, label: 'Reviews', exact: false },
+    { href: '/admin/settings', icon: FiSettings, label: 'Settings', exact: false },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -20,6 +21,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         if (pathname === '/admin') return 'Products & Inventory';
         if (pathname === '/admin/banners') return 'Banner Management';
         if (pathname === '/admin/reviews') return 'Review Management';
+        if (pathname === '/admin/settings') return 'Site Settings';
         if (pathname === '/admin/orders') return 'Order Management';
         return 'Dashboard';
     })();

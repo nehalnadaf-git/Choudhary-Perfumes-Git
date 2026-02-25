@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
+import { SettingsProvider } from "@/context/SettingsContext";
 import CartDrawer from "@/components/CartDrawer";
 import CartToastWrapper from "@/components/CartToastWrapper";
 import FloatingCartButton from "@/components/FloatingCartButton";
@@ -37,12 +38,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${montserrat.variable}`} suppressHydrationWarning>
       <body className="antialiased font-sans flex flex-col min-h-screen">
-        <CartProvider>
-          {children}
-          <CartDrawer />
-          <CartToastWrapper />
-          <FloatingCartButton />
-        </CartProvider>
+        <SettingsProvider>
+          <CartProvider>
+            {children}
+            <CartDrawer />
+            <CartToastWrapper />
+            <FloatingCartButton />
+          </CartProvider>
+        </SettingsProvider>
       </body>
     </html>
   );

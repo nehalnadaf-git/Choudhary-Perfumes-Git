@@ -10,12 +10,14 @@ import { FiMenu, FiX, FiSearch, FiShoppingBag, FiInstagram } from "react-icons/f
 import { FaWhatsapp } from "react-icons/fa";
 import clsx from "clsx";
 import { useCart } from "@/context/CartContext";
+import { useSettings } from "@/context/SettingsContext";
 import { Product } from "@/lib/types";
 
 const Header = () => {
     const pathname = usePathname();
     const router = useRouter();
     const { cartCount, toggleCart, isMenuOpen, toggleMenu, closeMenu } = useCart();
+    const { whatsappNumber } = useSettings();
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState<Product[]>([]);
@@ -241,7 +243,7 @@ const Header = () => {
                             {/* Social */}
                             <div className="flex items-center space-x-6 mt-6">
                                 <a
-                                    href="https://wa.me/916363278962"
+                                    href={`https://wa.me/${whatsappNumber}`}
                                     className="text-white/40 hover:text-gold transition-colors duration-200"
                                 >
                                     <FaWhatsapp size={26} />

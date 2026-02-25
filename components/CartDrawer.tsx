@@ -8,6 +8,7 @@ import { FiX, FiTrash2, FiMinus, FiPlus, FiShoppingBag } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import Image from "next/image";
 import Link from "next/link";
+import { useSettings } from "@/context/SettingsContext";
 
 const CartDrawer = () => {
     const {
@@ -19,6 +20,7 @@ const CartDrawer = () => {
         removeFromCart
     } = useCart();
     const pathname = usePathname();
+    const { whatsappNumber } = useSettings();
 
     // Hide on admin pages
     if (pathname.startsWith("/admin")) return null;
@@ -35,7 +37,7 @@ const CartDrawer = () => {
         message += `Total Items: ${itemCount}\n\n`;
         message += `Please confirm availability and delivery details. Thanks!`;
 
-        const whatsappUrl = `https://wa.me/916363278962?text=${encodeURIComponent(message)}`;
+        const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, "_blank");
     };
 

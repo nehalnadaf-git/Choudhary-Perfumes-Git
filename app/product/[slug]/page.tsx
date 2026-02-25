@@ -11,6 +11,7 @@ import { productReviews } from "@/lib/reviews";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
+import { useSettings } from "@/context/SettingsContext";
 import ReviewForm from "@/components/ReviewForm";
 import { FiPlus, FiMinus, FiShoppingBag, FiArrowLeft } from "react-icons/fi";
 import { FaWhatsapp, FaStar } from "react-icons/fa";
@@ -21,6 +22,7 @@ export default function ProductDetailPage() {
     const { slug } = useParams();
     const router = useRouter();
     const { addToCart } = useCart();
+    const { whatsappNumber } = useSettings();
     const [quantity, setQuantity] = useState(1);
     const [selectedVolumeIndex, setSelectedVolumeIndex] = useState(0);
     const [product, setProduct] = useState<Product | null>(null);
@@ -100,7 +102,7 @@ export default function ProductDetailPage() {
     };
 
     const message = `Hi Choudhary Perfumes!\n\nI would like to order:\n\n1. ${product.name} (${currentVolume}) (x${quantity}) - ₹${currentPrice * quantity}\n\nTotal Order Value: ₹${currentPrice * quantity}\n\nPlease confirm availability and delivery details. Thanks!`;
-    const whatsappLink = `https://wa.me/916363278962?text=${encodeURIComponent(message)}`;
+    const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
     return (
         <main className="min-h-screen bg-white">

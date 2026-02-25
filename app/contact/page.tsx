@@ -5,17 +5,19 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { FaWhatsapp, FaInstagram, FaMapMarkerAlt, FaEnvelope, FaPhone, FaClock } from "react-icons/fa";
 import { FiChevronDown } from "react-icons/fi";
+import { useSettings } from "@/context/SettingsContext";
 
 export default function ContactPage() {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [subject, setSubject] = useState('General Inquiry');
     const [message, setMessage] = useState('');
+    const { whatsappNumber } = useSettings();
 
     const handleSendMessage = (e: React.FormEvent) => {
         e.preventDefault();
         const whatsappMessage = `Hello Choudhary Perfumes,\n\nName: ${name}\nPhone: ${phone}\nSubject: ${subject}\n\nMessage:\n${message}\n\nThank you!`;
-        const url = `https://wa.me/916363278962?text=${encodeURIComponent(whatsappMessage)}`;
+        const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
         window.open(url, '_blank');
     };
 
@@ -54,14 +56,14 @@ export default function ContactPage() {
                                 title="WhatsApp Support"
                                 value="+91 6363 278 962"
                                 subtext="Available 24/7"
-                                href="https://wa.me/916363278962"
+                                href={`https://wa.me/${whatsappNumber}`}
                             />
                             <ContactCard
                                 icon={<FaPhone />}
                                 title="Phone Call"
                                 value="+91 6363 278 962"
                                 subtext="Mon - Sat, 10am - 9pm"
-                                href="tel:+916363278962"
+                                href={`tel:+${whatsappNumber}`}
                             />
                             <ContactCard
                                 icon={<FaMapMarkerAlt />}
