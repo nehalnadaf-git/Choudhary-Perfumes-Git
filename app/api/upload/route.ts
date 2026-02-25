@@ -19,10 +19,12 @@ export async function POST(request: Request) {
             );
         }
 
-        // Validate file size (max 5MB)
-        if (file.size > 5 * 1024 * 1024) {
+        // Validate file size (max 4MB)
+        const MAX_SIZE = 4 * 1024 * 1024;
+        if (file.size > MAX_SIZE) {
+            console.error(`File rejected: Size ${file.size} exceeds limit of ${MAX_SIZE}`);
             return NextResponse.json(
-                { error: 'File too large. Maximum size is 5MB.' },
+                { error: `File too large. Maximum size is 4MB. Your file is ${(file.size / (1024 * 1024)).toFixed(2)}MB.` },
                 { status: 400 }
             );
         }

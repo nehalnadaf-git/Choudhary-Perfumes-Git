@@ -420,7 +420,7 @@ export default function AdminDashboard() {
                                             <div className="text-center py-4">
                                                 <FiUploadCloud size={24} className="mx-auto mb-2 text-black/20" />
                                                 <p className="text-[10px] font-bold uppercase tracking-widest text-black/40">Tap to upload</p>
-                                                <p className="text-[8px] text-black/25 mt-1">JPG, PNG, WebP • Max 5MB</p>
+                                                <p className="text-[8px] text-black/25 mt-1">JPG, PNG, WebP • Max 4MB</p>
                                             </div>
                                         )}
                                         <input
@@ -430,21 +430,39 @@ export default function AdminDashboard() {
                                             onChange={async (e) => {
                                                 const file = e.target.files?.[0];
                                                 if (!file) return;
+
+                                                console.log(`Starting upload for ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
+
+                                                // Client-side validation for file size (4MB)
+                                                const MAX_SIZE = 4 * 1024 * 1024;
+                                                if (file.size > MAX_SIZE) {
+                                                    const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+                                                    alert(`File is too large (${sizeInMB} MB). Maximum allowed size is 4 MB.`);
+                                                    e.target.value = ''; // Reset input
+                                                    return;
+                                                }
+
                                                 setIsUploading(true);
                                                 try {
                                                     const formData = new FormData();
                                                     formData.append('file', file);
                                                     const res = await fetch('/api/upload', { method: 'POST', body: formData });
                                                     const data = await res.json();
+
                                                     if (res.ok && data.imageUrl) {
-                                                        setCurrentProduct({ ...currentProduct, imageUrl: data.imageUrl });
+                                                        console.log('Upload successful:', data.imageUrl);
+                                                        setCurrentProduct(prev => ({ ...prev, imageUrl: data.imageUrl }));
                                                     } else {
-                                                        alert(data.error || 'Upload failed');
+                                                        console.error('Server rejected upload:', data.error);
+                                                        alert(data.error || 'Upload failed. Please check the file and try again.');
                                                     }
                                                 } catch (err) {
-                                                    alert('Upload failed. Please try again.');
+                                                    console.error('Network Error during upload:', err);
+                                                    alert('Upload failed due to a network error. Please try again.');
                                                 } finally {
                                                     setIsUploading(false);
+                                                    // Reset file input so same file can be selected again
+                                                    if (e.target) e.target.value = '';
                                                 }
                                             }}
                                         />

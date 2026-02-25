@@ -10,8 +10,8 @@ import { Product } from "@/lib/types";
 import { productReviews } from "@/lib/reviews";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
 import { useCart } from "@/context/CartContext";
+import ReviewForm from "@/components/ReviewForm";
 import { FiPlus, FiMinus, FiShoppingBag, FiArrowLeft } from "react-icons/fi";
 import { FaWhatsapp, FaStar } from "react-icons/fa";
 import { HiCheckBadge } from "react-icons/hi2";
@@ -25,6 +25,22 @@ export default function ProductDetailPage() {
     const [selectedVolumeIndex, setSelectedVolumeIndex] = useState(0);
     const [product, setProduct] = useState<Product | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [reviews, setReviews] = useState<any[]>([]);
+    const [showReviewForm, setShowReviewForm] = useState(false);
+    const [submissionSuccess, setSubmissionSuccess] = useState(false);
+
+    const fetchReviews = async () => {
+        if (!slug) return;
+        try {
+            const res = await fetch(`/api/reviews?slug=${slug}`);
+            if (res.ok) {
+                const data = await res.json();
+                setReviews(data);
+            }
+        } catch (err) {
+            console.error('Failed to fetch reviews:', err);
+        }
+    };
 
     useEffect(() => {
         getProducts().then(allProducts => {
@@ -32,6 +48,7 @@ export default function ProductDetailPage() {
             setProduct(found || null);
             setIsLoading(false);
         });
+        fetchReviews();
     }, [slug]);
 
     if (isLoading) {
@@ -267,61 +284,64 @@ export default function ProductDetailPage() {
                     </div>
 
                     {/* Review Cards */}
-                    {slug && productReviews[slug as string] && productReviews[slug as string].length > 0 ? (
+                    {reviews.length > 0 || (slug && productReviews[slug as string] && productReviews[slug as string].length > 0) ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
-                            {productReviews[slug as string].map((review, index) => (
-                                <motion.div
-                                    key={review.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.5 + index * 0.15, duration: 0.4 }}
-                                    className="bg-white rounded-2xl p-5 md:p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300"
-                                >
-                                    {/* Reviewer Info */}
-                                    <div className="flex items-start gap-3 mb-4">
-                                        <div
-                                            className="w-11 h-11 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-sm"
-                                            style={{ backgroundColor: review.avatarColor || '#D0AB64' }}
-                                        >
-                                            {review.customerName.charAt(0)}
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-center gap-1.5">
-                                                <h4 className="font-semibold text-sm text-gray-900">
-                                                    {review.customerName}
-                                                </h4>
-                                                {review.verified && (
-                                                    <HiCheckBadge className="text-blue-500 text-sm shrink-0" />
-                                                )}
+                            {/* Merge real reviews with static ones, prioritized by date */}
+                            {[...reviews, ...(slug && productReviews[slug as string] ? productReviews[slug as string] : [])]
+                                .sort((a, b) => new Date(b.date || b.created_at).getTime() - new Date(a.date || a.created_at).getTime())
+                                .map((review, index) => (
+                                    <motion.div
+                                        key={review.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.2 + index * 0.05, duration: 0.4 }}
+                                        className="bg-white rounded-2xl p-5 md:p-6 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300"
+                                    >
+                                        {/* Reviewer Info */}
+                                        <div className="flex items-start gap-3 mb-4">
+                                            <div
+                                                className="w-11 h-11 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0 shadow-sm"
+                                                style={{ backgroundColor: review.avatarColor || review.avatar_color || '#D0AB64' }}
+                                            >
+                                                {review.customerName || review.customer_name ? (review.customerName || review.customer_name).charAt(0) : '?'}
                                             </div>
-                                            {/* Stars */}
-                                            <div className="flex items-center gap-0.5 mt-1">
-                                                {[...Array(5)].map((_, i) => (
-                                                    <FaStar
-                                                        key={i}
-                                                        size={12}
-                                                        className={i < review.rating ? 'text-gold' : 'text-gray-200'}
-                                                    />
-                                                ))}
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-1.5">
+                                                    <h4 className="font-semibold text-sm text-gray-900">
+                                                        {review.customerName || review.customer_name}
+                                                    </h4>
+                                                    {review.verified && (
+                                                        <HiCheckBadge className="text-blue-500 text-sm shrink-0" />
+                                                    )}
+                                                </div>
+                                                {/* Stars */}
+                                                <div className="flex items-center gap-0.5 mt-1">
+                                                    {[...Array(5)].map((_, i) => (
+                                                        <FaStar
+                                                            key={i}
+                                                            size={12}
+                                                            className={i < review.rating ? 'text-gold' : 'text-gray-200'}
+                                                        />
+                                                    ))}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    {/* Comment */}
-                                    <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                                        &ldquo;{review.comment}&rdquo;
-                                    </p>
+                                        {/* Comment */}
+                                        <p className="text-sm md:text-base text-gray-600 leading-relaxed">
+                                            &ldquo;{review.comment}&rdquo;
+                                        </p>
 
-                                    {/* Date */}
-                                    <p className="text-[11px] text-gray-400 mt-4 pt-3 border-t border-gray-50">
-                                        {new Date(review.date).toLocaleDateString('en-IN', {
-                                            day: 'numeric',
-                                            month: 'long',
-                                            year: 'numeric'
-                                        })}
-                                    </p>
-                                </motion.div>
-                            ))}
+                                        {/* Date */}
+                                        <p className="text-[11px] text-gray-400 mt-4 pt-3 border-t border-gray-50">
+                                            {new Date(review.date || review.created_at).toLocaleDateString('en-IN', {
+                                                day: 'numeric',
+                                                month: 'long',
+                                                year: 'numeric'
+                                            })}
+                                        </p>
+                                    </motion.div>
+                                ))}
                         </div>
                     ) : (
                         <div className="text-center py-8 max-w-md mx-auto">
@@ -331,21 +351,44 @@ export default function ProductDetailPage() {
 
                     {/* Write a Review Button */}
                     <div className="text-center mt-8 max-w-md mx-auto">
-                        <a
-                            href={`https://wa.me/916363278962?text=${encodeURIComponent(
-                                `Hi! I'd like to leave a review for *${product.name}*:\n\nRating: ⭐⭐⭐⭐⭐\nMy Review: `
-                            )}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2.5 bg-black text-white px-8 py-3.5 rounded-full font-semibold text-sm hover:bg-gold hover:text-black transition-all duration-300 shadow-lg hover:shadow-gold-md"
-                        >
-                            <FaStar className="text-gold group-hover:text-black" size={16} />
-                            Write a Review
-                        </a>
-                        <p className="text-[11px] text-gray-400 mt-3">Share your experience via WhatsApp</p>
+                        {submissionSuccess ? (
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="bg-emerald-50 text-emerald-700 py-4 px-6 rounded-2xl border border-emerald-100 font-semibold"
+                            >
+                                Thank you for your review! It has been submitted successfully.
+                            </motion.div>
+                        ) : (
+                            <>
+                                <button
+                                    onClick={() => setShowReviewForm(true)}
+                                    className="inline-flex items-center gap-2.5 bg-black text-white px-8 py-3.5 rounded-full font-semibold text-sm hover:bg-gold hover:text-black transition-all duration-300 shadow-lg hover:shadow-gold-md"
+                                >
+                                    <FaStar className="text-gold group-hover:text-black" size={16} />
+                                    Write a Review
+                                </button>
+                                <p className="text-[11px] text-gray-400 mt-3">Share your experience with us directly</p>
+                            </>
+                        )}
                     </div>
                 </div>
             </motion.section>
+
+            {/* Review Form Modal */}
+            {showReviewForm && (
+                <ReviewForm
+                    productSlug={slug as string}
+                    productName={product.name}
+                    onClose={() => setShowReviewForm(false)}
+                    onSuccess={() => {
+                        setShowReviewForm(false);
+                        setSubmissionSuccess(true);
+                        fetchReviews();
+                        setTimeout(() => setSubmissionSuccess(false), 5000);
+                    }}
+                />
+            )}
 
             <Footer />
         </main>
