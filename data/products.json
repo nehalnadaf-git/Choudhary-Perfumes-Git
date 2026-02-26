@@ -24,7 +24,7 @@
     "description": "Pure sandalwood attar crafted from authentic Indian sandalwood. This traditional fragrance oil offers a warm, woody, and creamy aroma that's both calming and sophisticated.",
     "featured": true,
     "inStock": true,
-    "imageUrl": "/images/products/Attars/sandal-Attar.png",
+    "imageUrl": "/images/products/Attars/sandal-attar.png",
     "gender": "unisex"
   },
   {
@@ -52,7 +52,7 @@
     "description": "Luxurious Oud attar derived from precious agarwood. Known as \"liquid gold,\" this premium attar offers an intensely rich, woody, and slightly sweet aroma.",
     "featured": true,
     "inStock": true,
-    "imageUrl": "/images/products/Attars/oudh-Attar.png",
+    "imageUrl": "/images/products/Attars/oudh-attar.png",
     "gender": "unisex"
   },
   {
@@ -80,7 +80,7 @@
     "description": "An exquisite blend of traditional fragrances creating a unique aromatic experience. Miziyan Attar combines floral and woody notes in perfect harmony.",
     "featured": false,
     "inStock": true,
-    "imageUrl": "/images/products/Attars/miziyan-Attar.png",
+    "imageUrl": "/images/products/Attars/miziyan-attar.png",
     "gender": "unisex"
   },
   {
