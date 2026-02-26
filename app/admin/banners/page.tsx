@@ -99,11 +99,11 @@ export default function BannersPage() {
     const handleUpload = async (file: File, field: 'mobile' | 'desktop', inputElement?: HTMLInputElement) => {
         console.log(`Starting banner upload for ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
 
-        // Client-side validation for file size (4MB)
-        const MAX_SIZE = 4 * 1024 * 1024;
+        // Client-side validation for file size (2MB)
+        const MAX_SIZE = 2 * 1024 * 1024;
         if (file.size > MAX_SIZE) {
             const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
-            alert(`File is too large (${sizeInMB} MB). Maximum allowed size is 4 MB.`);
+            alert(`File is too large (${sizeInMB} MB). Maximum allowed size is 2 MB.`);
             if (inputElement) inputElement.value = '';
             return;
         }
@@ -419,7 +419,7 @@ export default function BannersPage() {
                                             <div className="text-center py-4">
                                                 <FiMonitor size={24} className="mx-auto mb-2 text-black/20" />
                                                 <p className="text-[10px] font-bold uppercase tracking-widest text-black/40">Desktop Banner (1920×1080)</p>
-                                                <p className="text-[8px] text-black/25 mt-1">JPG, PNG, WebP • Max 4MB</p>
+                                                <p className="text-[8px] text-black/25 mt-1">JPG, PNG, WebP • Max 2MB</p>
                                             </div>
                                         )}
                                         <input type="file" accept="image/*" className="hidden"
@@ -469,7 +469,7 @@ export default function BannersPage() {
                                             <div className="text-center py-4">
                                                 <FiSmartphone size={24} className="mx-auto mb-2 text-black/20" />
                                                 <p className="text-[10px] font-bold uppercase tracking-widest text-black/40">Mobile Banner (1080×1920)</p>
-                                                <p className="text-[8px] text-black/25 mt-1">JPG, PNG, WebP • Max 4MB</p>
+                                                <p className="text-[8px] text-black/25 mt-1">JPG, PNG, WebP • Max 2MB</p>
                                             </div>
                                         )}
                                         <input type="file" accept="image/*" className="hidden"

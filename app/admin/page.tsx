@@ -420,7 +420,7 @@ export default function AdminDashboard() {
                                             <div className="text-center py-4">
                                                 <FiUploadCloud size={24} className="mx-auto mb-2 text-black/20" />
                                                 <p className="text-[10px] font-bold uppercase tracking-widest text-black/40">Tap to upload</p>
-                                                <p className="text-[8px] text-black/25 mt-1">JPG, PNG, WebP • Max 4MB</p>
+                                                <p className="text-[8px] text-black/25 mt-1">JPG, PNG, WebP • Max 2MB</p>
                                             </div>
                                         )}
                                         <input
@@ -433,11 +433,11 @@ export default function AdminDashboard() {
 
                                                 console.log(`Starting upload for ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`);
 
-                                                // Client-side validation for file size (4MB)
-                                                const MAX_SIZE = 4 * 1024 * 1024;
+                                                // Client-side validation for file size (2MB)
+                                                const MAX_SIZE = 2 * 1024 * 1024;
                                                 if (file.size > MAX_SIZE) {
                                                     const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
-                                                    alert(`File is too large (${sizeInMB} MB). Maximum allowed size is 4 MB.`);
+                                                    alert(`File is too large (${sizeInMB} MB). Maximum allowed size is 2 MB.`);
                                                     e.target.value = ''; // Reset input
                                                     return;
                                                 }

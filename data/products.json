@@ -1,0 +1,264 @@
+[
+  {
+    "id": "atr-san-001",
+    "name": "Sandal Attar",
+    "slug": "sandal-attar",
+    "brand": "Choudhary Perfumes",
+    "category": "attar",
+    "volume": "12ml",
+    "price": 899,
+    "volumes": [
+      {
+        "volume": "5ml",
+        "price": 449
+      },
+      {
+        "volume": "10ml",
+        "price": 799
+      },
+      {
+        "volume": "20ml",
+        "price": 1399
+      }
+    ],
+    "description": "Pure sandalwood attar crafted from authentic Indian sandalwood. This traditional fragrance oil offers a warm, woody, and creamy aroma that's both calming and sophisticated.",
+    "featured": true,
+    "inStock": true,
+    "imageUrl": "/images/products/Attars/Sandal-Attar.png",
+    "gender": "unisex"
+  },
+  {
+    "id": "atr-oud-002",
+    "name": "Oud Attar",
+    "slug": "oud-attar",
+    "brand": "Choudhary Perfumes",
+    "category": "attar",
+    "volume": "12ml",
+    "price": 1299,
+    "volumes": [
+      {
+        "volume": "5ml",
+        "price": 599
+      },
+      {
+        "volume": "10ml",
+        "price": 1099
+      },
+      {
+        "volume": "20ml",
+        "price": 1899
+      }
+    ],
+    "description": "Luxurious Oud attar derived from precious agarwood. Known as \"liquid gold,\" this premium attar offers an intensely rich, woody, and slightly sweet aroma.",
+    "featured": true,
+    "inStock": true,
+    "imageUrl": "/images/products/Attars/Oudh-Attar.png",
+    "gender": "unisex"
+  },
+  {
+    "id": "atr-miz-003",
+    "name": "Miziyan Attar",
+    "slug": "miziyan-attar",
+    "brand": "Choudhary Perfumes",
+    "category": "attar",
+    "volume": "12ml",
+    "price": 799,
+    "volumes": [
+      {
+        "volume": "5ml",
+        "price": 399
+      },
+      {
+        "volume": "10ml",
+        "price": 699
+      },
+      {
+        "volume": "20ml",
+        "price": 1199
+      }
+    ],
+    "description": "An exquisite blend of traditional fragrances creating a unique aromatic experience. Miziyan Attar combines floral and woody notes in perfect harmony.",
+    "featured": false,
+    "inStock": true,
+    "imageUrl": "/images/products/Attars/Miziyan-Attar.png",
+    "gender": "unisex"
+  },
+  {
+    "id": "atr-mus-004",
+    "name": "Musk Rijali",
+    "slug": "musk-rijali",
+    "brand": "Choudhary Perfumes",
+    "category": "attar",
+    "volume": "12ml",
+    "price": 949,
+    "volumes": [
+      {
+        "volume": "5ml",
+        "price": 449
+      },
+      {
+        "volume": "10ml",
+        "price": 849
+      },
+      {
+        "volume": "20ml",
+        "price": 1499
+      }
+    ],
+    "description": "A captivating musk-based attar that embodies sensuality and warmth. Musk Rijali offers a clean, skin-like scent with animalic undertones.",
+    "featured": false,
+    "inStock": true,
+    "imageUrl": "/images/products/Attars/Musk-Rijali-Attar.png",
+    "gender": "unisex"
+  },
+  {
+    "id": "prf-chp-001",
+    "name": "Mystic Amber Oudh",
+    "slug": "mystic-amber-oudh",
+    "brand": "Choudhary Perfumes",
+    "category": "perfume",
+    "type": "Parfum",
+    "volume": "100ml",
+    "price": 1499,
+    "description": "Our signature creation! Mystic Amber Oudh is an exclusive blend crafted by Choudhary Perfumes, combining the richness of amber with the depth of oud.",
+    "featured": true,
+    "inStock": true,
+    "imageUrl": "/images/products/Perfumes/Choudhary%20Perfumes%20Mystic-amber-oudh.png",
+    "gender": "unisex"
+  },
+  {
+    "id": "prf-dio-002",
+    "name": "Dior Homme Intense EDP",
+    "slug": "dior-homme-intense-edp",
+    "brand": "Dior (Master Copy)",
+    "category": "perfume",
+    "type": "Eau de Parfum",
+    "volume": "100ml",
+    "price": 1799,
+    "description": "A sophisticated interpretation of modern masculinity. This master copy captures the essence of the iconic Dior Homme Intense.",
+    "featured": true,
+    "inStock": true,
+    "imageUrl": "/images/products/Perfumes/dior-homme-intense-edp-100ml.jpg",
+    "gender": "men"
+  },
+  {
+    "id": "prf-dio-003",
+    "name": "Miss Dior Rose Essence EDT",
+    "slug": "miss-dior-rose-essence-edt",
+    "brand": "Dior (Master Copy)",
+    "category": "perfume",
+    "type": "Eau de Toilette",
+    "volume": "100ml",
+    "price": 1699,
+    "description": "A romantic floral fragrance that celebrates femininity and elegance. This master copy of Miss Dior Rose Essence captures the essence of fresh roses at dawn.",
+    "featured": false,
+    "inStock": true,
+    "imageUrl": "/images/products/Perfumes/dior-miss-dior-rose-essence-edt-100ml.jpg",
+    "gender": "women"
+  },
+  {
+    "id": "prf-dg-004",
+    "name": "Dolce & Gabbana Devotion Parfum",
+    "slug": "dolce-and-gabbana-devotion-parfum",
+    "brand": "Dolce & Gabbana (Master Copy)",
+    "category": "perfume",
+    "type": "Parfum",
+    "volume": "100ml",
+    "price": 1899,
+    "description": "A gourmand masterpiece that's irresistibly delicious. This master copy of D&G Devotion opens with sparkling citrus and hazelnut cream.",
+    "featured": false,
+    "inStock": true,
+    "imageUrl": "/images/products/Perfumes/dolce-and-gabbana-devotion-parfum-100ml.jpg",
+    "gender": "women"
+  },
+  {
+    "id": "prf-dg-005",
+    "name": "Dolce & Gabbana The One EDT",
+    "slug": "dolce-and-gabbana-the-one-edt",
+    "brand": "Dolce & Gabbana (Master Copy)",
+    "category": "perfume",
+    "type": "Eau de Toilette",
+    "volume": "100ml",
+    "price": 1599,
+    "description": "A timeless oriental floral fragrance for sophisticated men. This master copy of The One EDT combines spicy freshness with tobacco warmth and amber depth.",
+    "featured": false,
+    "inStock": true,
+    "imageUrl": "/images/products/Perfumes/dolce-and-gabbana-the-one-edt-100ml.jpg",
+    "gender": "men"
+  },
+  {
+    "id": "prf-pac-006",
+    "name": "Paco Rabanne 1 Million Parfum",
+    "slug": "paco-rabanne-1-million-parfum",
+    "brand": "Paco Rabanne (Master Copy)",
+    "category": "perfume",
+    "type": "Parfum",
+    "volume": "100ml",
+    "price": 1799,
+    "description": "The ultimate statement of luxury and confidence. This master copy of 1 Million Parfum is an intense leather fragrance with salty notes, tuberose, and tonka bean.",
+    "featured": true,
+    "inStock": true,
+    "imageUrl": "/images/products/Perfumes/paco-rabanne-1-million-parfum-100ml.jpg",
+    "gender": "men"
+  },
+  {
+    "id": "prf-pdm-007",
+    "name": "Parfums de Marly Delina Exclusif Parfum",
+    "slug": "parfums-de-marly-delina-exclusif-parfum",
+    "brand": "Parfums de Marly (Master Copy)",
+    "category": "perfume",
+    "type": "Parfum",
+    "volume": "75ml",
+    "price": 2199,
+    "description": "Niche luxury in a bottle. This master copy of Delina Exclusif is an opulent rose fragrance enhanced with fruity notes and creamy vanilla.",
+    "featured": false,
+    "inStock": true,
+    "imageUrl": "/images/products/Perfumes/parfums-de-marly-valaya-exclusif-parfum-75ml.jpg",
+    "gender": "women"
+  },
+  {
+    "id": "prf-ver-008",
+    "name": "Versace Pour Homme EDT",
+    "slug": "versace-pour-homme-edt",
+    "brand": "Versace (Master Copy)",
+    "category": "perfume",
+    "type": "Eau de Toilette",
+    "volume": "100ml",
+    "price": 1499,
+    "description": "Mediterranean freshness meets Italian elegance. This master copy of Versace Pour Homme is an aromatic aquatic fragrance combining citrus, florals, and woody amber.",
+    "featured": false,
+    "inStock": true,
+    "imageUrl": "/images/products/Perfumes/versace-pour-homme-edt-100ml.jpg",
+    "gender": "men"
+  },
+  {
+    "id": "prf-ysl-009",
+    "name": "YSL Libre Le Parfum",
+    "slug": "ysl-libre-le-parfum",
+    "brand": "Yves Saint Laurent (Master Copy)",
+    "category": "perfume",
+    "type": "Le Parfum",
+    "volume": "90ml",
+    "price": 1899,
+    "description": "Freedom expressed through fragrance. This master copy of YSL Libre Le Parfum is a bold lavender fragrance enhanced with orange blossom and vanilla orchid.",
+    "featured": false,
+    "inStock": true,
+    "imageUrl": "/images/products/Perfumes/ysl-libre-le-parfum-90ml.jpg",
+    "gender": "women"
+  },
+  {
+    "id": "prf-ysl-010",
+    "name": "YSL Y Le Parfum",
+    "slug": "ysl-y-le-parfum",
+    "brand": "Yves Saint Laurent (Master Copy)",
+    "category": "perfume",
+    "type": "Le Parfum",
+    "volume": "100ml",
+    "price": 1799,
+    "description": "For the generation that dares. This master copy of YSL Y Le Parfum intensifies the iconic Y fragrance with darker woods, lavender intensity, and sensual vanilla.",
+    "featured": false,
+    "inStock": true,
+    "imageUrl": "/images/products/Perfumes/ysl-y-le-parfum-100ml.jpg",
+    "gender": "men"
+  }
+]
