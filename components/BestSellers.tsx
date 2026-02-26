@@ -8,7 +8,6 @@ import { getProducts } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
 import { FiPlus, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { FaStar } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
 
 const BestSellers = () => {
     const { addToCart } = useCart();
@@ -16,9 +15,12 @@ const BestSellers = () => {
     const [loading, setLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(4);
-    const [direction, setDirection] = useState(0);
-    const touchStartX = useRef(0);
-    const touchEndX = useRef(0);
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    // Drag state
+    const isDragging = useRef(false);
+    const dragStartX = useRef(0);
+    const dragScrollLeft = useRef(0);
 
     useEffect(() => {
         getProducts().then(allProducts => {
@@ -45,48 +47,70 @@ const BestSellers = () => {
     // Reset page when items per page changes
     useEffect(() => {
         setCurrentPage(0);
+        if (scrollRef.current) {
+            scrollRef.current.scrollLeft = 0;
+        }
     }, [itemsPerPage]);
 
     const totalPages = Math.ceil(products.length / itemsPerPage);
 
-    const goToPage = useCallback((page: number, dir?: number) => {
-        if (page < 0 || page >= totalPages) return;
-        setDirection(dir !== undefined ? dir : (page > currentPage ? 1 : -1));
+    // Instantly snap to a page (no animation)
+    const snapToPage = useCallback((page: number) => {
+        if (!scrollRef.current) return;
+        const container = scrollRef.current;
+        const pageWidth = container.clientWidth;
+        // Instant jump — no smooth scroll
+        container.scrollLeft = page * pageWidth;
         setCurrentPage(page);
-    }, [totalPages, currentPage]);
+    }, []);
 
     const nextPage = useCallback(() => {
-        if (currentPage < totalPages - 1) {
-            goToPage(currentPage + 1, 1);
-        }
-    }, [currentPage, totalPages, goToPage]);
+        if (currentPage < totalPages - 1) snapToPage(currentPage + 1);
+    }, [currentPage, totalPages, snapToPage]);
 
     const prevPage = useCallback(() => {
-        if (currentPage > 0) {
-            goToPage(currentPage - 1, -1);
-        }
-    }, [currentPage, goToPage]);
+        if (currentPage > 0) snapToPage(currentPage - 1);
+    }, [currentPage, snapToPage]);
 
-    // Touch/swipe handling
-    const handleTouchStart = (e: React.TouchEvent) => {
-        touchStartX.current = e.targetTouches[0].clientX;
+    // Track current page from scroll position (for dots)
+    const handleScroll = useCallback(() => {
+        if (!scrollRef.current) return;
+        const container = scrollRef.current;
+        const page = Math.round(container.scrollLeft / container.clientWidth);
+        setCurrentPage(page);
+    }, []);
+
+    // Mouse drag to scroll
+    const onMouseDown = (e: React.MouseEvent) => {
+        if (!scrollRef.current) return;
+        isDragging.current = true;
+        dragStartX.current = e.pageX - scrollRef.current.offsetLeft;
+        dragScrollLeft.current = scrollRef.current.scrollLeft;
+        scrollRef.current.style.cursor = "grabbing";
+        scrollRef.current.style.userSelect = "none";
     };
 
-    const handleTouchMove = (e: React.TouchEvent) => {
-        touchEndX.current = e.targetTouches[0].clientX;
+    const onMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging.current || !scrollRef.current) return;
+        e.preventDefault();
+        const x = e.pageX - scrollRef.current.offsetLeft;
+        const walk = x - dragStartX.current;
+        scrollRef.current.scrollLeft = dragScrollLeft.current - walk;
     };
 
-    const handleTouchEnd = () => {
-        const diff = touchStartX.current - touchEndX.current;
-        const threshold = 50;
-        if (diff > threshold) {
-            nextPage();
-        } else if (diff < -threshold) {
-            prevPage();
-        }
+    const onMouseUp = () => {
+        if (!scrollRef.current) return;
+        isDragging.current = false;
+        scrollRef.current.style.cursor = "grab";
+        scrollRef.current.style.removeProperty("user-select");
+        // Snap to nearest page after drag ends
+        const page = Math.round(scrollRef.current.scrollLeft / scrollRef.current.clientWidth);
+        snapToPage(Math.max(0, Math.min(page, totalPages - 1)));
     };
 
-
+    const onMouseLeave = () => {
+        if (isDragging.current) onMouseUp();
+    };
 
     if (loading) {
         return (
@@ -98,106 +122,107 @@ const BestSellers = () => {
 
     if (products.length === 0) return null;
 
-    const currentProducts = products.slice(
-        currentPage * itemsPerPage,
-        currentPage * itemsPerPage + itemsPerPage
-    );
-
-    const slideVariants = {
-        enter: (dir: number) => ({
-            x: dir > 0 ? 300 : -300,
-            opacity: 0,
-        }),
-        center: {
-            x: 0,
-            opacity: 1,
-        },
-        exit: (dir: number) => ({
-            x: dir > 0 ? -300 : 300,
-            opacity: 0,
-        }),
-    };
-
     return (
         <div className="relative">
-            {/* Slider Container */}
+            {/* Scroll Container — scroll-snap with NO smooth scroll */}
             <div
-                className="overflow-hidden"
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
+                ref={scrollRef}
+                onScroll={handleScroll}
+                onMouseDown={onMouseDown}
+                onMouseMove={onMouseMove}
+                onMouseUp={onMouseUp}
+                onMouseLeave={onMouseLeave}
+                className="overflow-x-auto scrollbar-hide"
+                style={{
+                    scrollSnapType: "x mandatory",
+                    scrollBehavior: "auto",
+                    cursor: "grab",
+                    WebkitOverflowScrolling: "touch",
+                    msOverflowStyle: "none",
+                    scrollbarWidth: "none",
+                }}
             >
-                <AnimatePresence initial={false} custom={direction} mode="wait">
-                    <motion.div
-                        key={currentPage}
-                        custom={direction}
-                        variants={slideVariants}
-                        initial="enter"
-                        animate="center"
-                        exit="exit"
-                        transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6"
-                    >
-                        {currentProducts.map((product, index) => (
-                            <div key={product.id} className="group">
-                                <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full">
-                                    {/* Product Image */}
-                                    <Link href={`/product/${product.slug}`} className="block">
-                                        <div className="relative w-full aspect-square overflow-hidden bg-white">
-                                            <Image
-                                                src={product.imageUrl}
-                                                alt={product.name}
-                                                fill
-                                                sizes="(max-width: 640px) 50vw, 25vw"
-                                                className="object-contain object-center group-hover:scale-105 transition-transform duration-500"
-                                            />
 
-                                            {/* Best Seller Badge */}
-                                            <span className="absolute top-2 left-2 md:top-3 md:left-3 bg-white/20 backdrop-blur-md text-white px-1.5 py-0.5 md:px-2.5 md:py-1 text-[7px] md:text-[9px] font-bold uppercase tracking-widest rounded-full border border-white/30 shadow-sm">
-                                                #{currentPage * itemsPerPage + index + 1} Best Seller
-                                            </span>
-                                        </div>
-                                    </Link>
+                {/* One wide track holding all "pages" side by side */}
+                <div
+                    className="flex"
+                    style={{ width: `${totalPages * 100}%` }}
+                >
+                    {Array.from({ length: totalPages }).map((_, pageIndex) => {
+                        const pageProducts = products.slice(
+                            pageIndex * itemsPerPage,
+                            pageIndex * itemsPerPage + itemsPerPage
+                        );
+                        return (
+                            <div
+                                key={pageIndex}
+                                className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 flex-shrink-0 px-0"
+                                style={{
+                                    width: `${100 / totalPages}%`,
+                                    scrollSnapAlign: "start",
+                                }}
+                            >
+                                {pageProducts.map((product, index) => (
+                                    <div key={product.id} className="group">
+                                        <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-200 border border-gray-100 flex flex-col h-full">
+                                            {/* Product Image */}
+                                            <Link href={`/product/${product.slug}`} className="block">
+                                                <div className="relative w-full aspect-square overflow-hidden bg-white">
+                                                    <Image
+                                                        src={product.imageUrl}
+                                                        alt={product.name}
+                                                        fill
+                                                        sizes="(max-width: 640px) 50vw, 25vw"
+                                                        className="object-contain object-center group-hover:scale-105 transition-transform duration-300"
+                                                    />
+                                                    {/* Best Seller Badge */}
+                                                    <span className="absolute top-2 left-2 md:top-3 md:left-3 bg-white/20 backdrop-blur-md text-white px-1.5 py-0.5 md:px-2.5 md:py-1 text-[7px] md:text-[9px] font-bold uppercase tracking-widest rounded-full border border-white/30 shadow-sm">
+                                                        #{pageIndex * itemsPerPage + index + 1} Best Seller
+                                                    </span>
+                                                </div>
+                                            </Link>
 
-                                    {/* Product Info */}
-                                    <div className="p-4 flex-1 flex flex-col">
-                                        {/* Star Rating */}
-                                        <div className="flex items-center gap-0.5 text-gold mb-2">
-                                            <FaStar size={10} />
-                                            <FaStar size={10} />
-                                            <FaStar size={10} />
-                                            <FaStar size={10} />
-                                            <FaStar size={10} />
-                                            <span className="text-gray-400 text-[10px] ml-1.5">4.9</span>
-                                        </div>
+                                            {/* Product Info */}
+                                            <div className="p-4 flex-1 flex flex-col">
+                                                {/* Star Rating */}
+                                                <div className="flex items-center gap-0.5 text-gold mb-2">
+                                                    <FaStar size={10} />
+                                                    <FaStar size={10} />
+                                                    <FaStar size={10} />
+                                                    <FaStar size={10} />
+                                                    <FaStar size={10} />
+                                                    <span className="text-gray-400 text-[10px] ml-1.5">4.9</span>
+                                                </div>
 
-                                        <Link href={`/product/${product.slug}`} className="block flex-1">
-                                            <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">{product.category}</p>
-                                            <h3 className="font-serif font-bold text-sm md:text-base text-black mb-1 group-hover:text-gold transition-colors line-clamp-2 leading-tight">
-                                                {product.name}
-                                            </h3>
-                                            <p className="text-xs text-gray-500 truncate">{product.brand}</p>
-                                        </Link>
+                                                <Link href={`/product/${product.slug}`} className="block flex-1">
+                                                    <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">{product.category}</p>
+                                                    <h3 className="font-serif font-bold text-sm md:text-base text-black mb-1 group-hover:text-gold transition-colors line-clamp-2 leading-tight">
+                                                        {product.name}
+                                                    </h3>
+                                                    <p className="text-xs text-gray-500 truncate">{product.brand}</p>
+                                                </Link>
 
-                                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-                                            <div className="flex flex-col">
-                                                <span className="text-lg font-bold text-black">₹{product.price}</span>
-                                                <span className="text-xs text-gray-400 line-through">₹{Math.round(product.price * 1.3)}</span>
+                                                <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                                                    <div className="flex flex-col">
+                                                        <span className="text-lg font-bold text-black">₹{product.price}</span>
+                                                        <span className="text-xs text-gray-400 line-through">₹{Math.round(product.price * 1.3)}</span>
+                                                    </div>
+                                                    <button
+                                                        onClick={() => addToCart(product)}
+                                                        className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:bg-gold hover:text-black transition-colors active:scale-95 shadow-md"
+                                                        aria-label="Add to Cart"
+                                                    >
+                                                        <FiPlus size={18} />
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <button
-                                                onClick={() => addToCart(product)}
-                                                className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:bg-gold hover:text-black transition-all active:scale-95 shadow-md"
-                                                aria-label="Add to Cart"
-                                            >
-                                                <FiPlus size={18} />
-                                            </button>
                                         </div>
                                     </div>
-                                </div>
+                                ))}
                             </div>
-                        ))}
-                    </motion.div>
-                </AnimatePresence>
+                        );
+                    })}
+                </div>
             </div>
 
             {/* Navigation Arrows */}
@@ -206,9 +231,9 @@ const BestSellers = () => {
                     <button
                         onClick={prevPage}
                         disabled={currentPage === 0}
-                        className={`absolute top-1/2 -translate-y-1/2 -left-3 md:-left-5 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${currentPage === 0
+                        className={`absolute top-1/2 -translate-y-1/2 -left-3 md:-left-5 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-lg ${currentPage === 0
                             ? "bg-gray-100 text-gray-300 cursor-not-allowed"
-                            : "bg-white text-black hover:bg-gold hover:text-black border border-gray-200 hover:border-gold"
+                            : "bg-white text-black hover:bg-gold hover:text-black border border-gray-200 hover:border-gold transition-colors"
                             }`}
                         aria-label="Previous products"
                     >
@@ -217,9 +242,9 @@ const BestSellers = () => {
                     <button
                         onClick={nextPage}
                         disabled={currentPage === totalPages - 1}
-                        className={`absolute top-1/2 -translate-y-1/2 -right-3 md:-right-5 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${currentPage === totalPages - 1
+                        className={`absolute top-1/2 -translate-y-1/2 -right-3 md:-right-5 z-20 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center shadow-lg ${currentPage === totalPages - 1
                             ? "bg-gray-100 text-gray-300 cursor-not-allowed"
-                            : "bg-white text-black hover:bg-gold hover:text-black border border-gray-200 hover:border-gold"
+                            : "bg-white text-black hover:bg-gold hover:text-black border border-gray-200 hover:border-gold transition-colors"
                             }`}
                         aria-label="Next products"
                     >
@@ -234,8 +259,8 @@ const BestSellers = () => {
                     {Array.from({ length: totalPages }).map((_, i) => (
                         <button
                             key={i}
-                            onClick={() => goToPage(i)}
-                            className={`rounded-full transition-all duration-300 ${i === currentPage
+                            onClick={() => snapToPage(i)}
+                            className={`rounded-full transition-all duration-150 ${i === currentPage
                                 ? "w-8 h-2.5 bg-gold"
                                 : "w-2.5 h-2.5 bg-gray-300 hover:bg-gray-400"
                                 }`}
