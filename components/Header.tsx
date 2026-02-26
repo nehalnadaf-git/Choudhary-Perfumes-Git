@@ -101,7 +101,7 @@ const Header = () => {
         <>
             {/* Floating Glassmorphism Header */}
             <header
-                className="fixed z-50 top-3 left-3 right-3 md:top-5 md:left-6 md:right-6 lg:left-10 lg:right-10"
+                className="fixed z-[65] top-3 left-3 right-3 md:top-5 md:left-6 md:right-6 lg:left-10 lg:right-10"
             >
                 <div
                     className="relative rounded-[22px] md:rounded-[28px] overflow-hidden py-3.5 md:py-4"
@@ -123,7 +123,7 @@ const Header = () => {
                     <div className="absolute top-0 left-0 w-24 h-24 bg-gold/[0.02] rounded-full blur-2xl pointer-events-none" />
                     <div className="absolute top-0 right-0 w-24 h-24 bg-gold/[0.02] rounded-full blur-2xl pointer-events-none" />
 
-                    <div className="relative z-[60] px-4 md:px-6 flex items-center justify-between">
+                    <div className="relative z-[70] px-4 md:px-6 flex items-center justify-between">
                         {/* Left: Menu Button */}
                         <div className="flex items-center gap-3 md:gap-4 w-[80px] md:w-[120px]">
                             <button
@@ -140,7 +140,7 @@ const Header = () => {
                         </div>
 
                         {/* Center: Logo */}
-                        <Link href="/" className="flex items-center gap-2 md:gap-2.5 group">
+                        <Link href="/" className="flex items-center gap-2 md:gap-2.5 group relative z-[70]">
                             <div className="relative w-8 h-8 md:w-10 md:h-10">
                                 <Image
                                     src="/images/favicon/logo.png"
