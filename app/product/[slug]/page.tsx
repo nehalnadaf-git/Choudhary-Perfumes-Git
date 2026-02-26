@@ -18,13 +18,18 @@ export async function generateMetadata(
         };
     }
 
-    // Build absolute image URL for OG
-    const imageUrl = product.imageUrl.startsWith('http')
-        ? product.imageUrl
-        : `${SITE_URL}${product.imageUrl}`;
-
     const title = `${product.name} | Choudhary Perfumes`;
-    const description = product.description || `Shop ${product.name} by ${product.brand} at Choudhary Perfumes — premium attars & designer fragrances.`;
+    const description = product.description
+        || `Shop ${product.name} by ${product.brand} at Choudhary Perfumes — premium attars & designer fragrances.`;
+
+    // Use the dynamic OG image generator so WhatsApp gets a fast, optimised JPEG
+    const ogImageUrl = `${SITE_URL}/api/og?` + new URLSearchParams({
+        name: product.name,
+        brand: product.brand,
+        price: String(product.price),
+        category: product.category,
+        image: product.imageUrl,
+    }).toString();
 
     return {
         title,
@@ -36,9 +41,9 @@ export async function generateMetadata(
             siteName: 'Choudhary Perfumes',
             images: [
                 {
-                    url: imageUrl,
+                    url: ogImageUrl,
                     width: 1200,
-                    height: 1200,
+                    height: 630,
                     alt: product.name,
                 },
             ],
@@ -49,7 +54,7 @@ export async function generateMetadata(
             card: 'summary_large_image',
             title,
             description,
-            images: [imageUrl],
+            images: [ogImageUrl],
         },
     };
 }
