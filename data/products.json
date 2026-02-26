@@ -196,7 +196,7 @@
     "volume": "100ml",
     "price": 1799,
     "description": "The ultimate statement of luxury and confidence. This master copy of 1 Million Parfum is an intense leather fragrance with salty notes, tuberose, and tonka bean.",
-    "featured": true,
+    "featured": false,
     "inStock": true,
     "imageUrl": "/images/products/Perfumes/paco-rabanne-1-million-parfum-100ml.jpg",
     "gender": "men"
