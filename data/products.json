@@ -24,7 +24,7 @@
     "description": "Pure sandalwood attar crafted from authentic Indian sandalwood. This traditional fragrance oil offers a warm, woody, and creamy aroma that's both calming and sophisticated.",
     "featured": true,
     "inStock": true,
-    "imageUrl": "/images/products/Attars/Sandal-Attar.png",
+    "imageUrl": "/images/products/Attars/sandal-Attar.png",
     "gender": "unisex"
   },
   {
@@ -52,7 +52,7 @@
     "description": "Luxurious Oud attar derived from precious agarwood. Known as \"liquid gold,\" this premium attar offers an intensely rich, woody, and slightly sweet aroma.",
     "featured": true,
     "inStock": true,
-    "imageUrl": "/images/products/Attars/Oudh-Attar.png",
+    "imageUrl": "/images/products/Attars/oudh-Attar.png",
     "gender": "unisex"
   },
   {
@@ -80,7 +80,7 @@
     "description": "An exquisite blend of traditional fragrances creating a unique aromatic experience. Miziyan Attar combines floral and woody notes in perfect harmony.",
     "featured": false,
     "inStock": true,
-    "imageUrl": "/images/products/Attars/Miziyan-Attar.png",
+    "imageUrl": "/images/products/Attars/miziyan-Attar.png",
     "gender": "unisex"
   },
   {
@@ -108,7 +108,7 @@
     "description": "A captivating musk-based attar that embodies sensuality and warmth. Musk Rijali offers a clean, skin-like scent with animalic undertones.",
     "featured": false,
     "inStock": true,
-    "imageUrl": "/images/products/Attars/Musk-Rijali-Attar.png",
+    "imageUrl": "/images/products/Attars/musk-rijali-attar.png",
     "gender": "unisex"
   },
   {
