@@ -51,7 +51,7 @@ const CartDrawer = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={toggleCart}
-                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
+                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[70]"
                     />
 
                     {/* Drawer */}
@@ -60,7 +60,8 @@ const CartDrawer = () => {
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
                         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                        className="fixed top-0 right-0 h-full w-full md:w-[450px] bg-white shadow-2xl z-50 flex flex-col"
+                        className="fixed top-0 right-0 w-full md:w-[450px] bg-white shadow-2xl z-[75] flex flex-col"
+                        style={{ height: '100dvh' }}
                     >
                         {/* Header */}
                         <div className="p-6 border-b border-gray-100 flex items-center justify-between bg-white sticky top-0 z-10">
