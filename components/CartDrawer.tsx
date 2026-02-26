@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useEffect } from "react";
 import { useCart } from "@/context/CartContext";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,6 +22,18 @@ const CartDrawer = () => {
     } = useCart();
     const pathname = usePathname();
     const { whatsappNumber } = useSettings();
+
+    // Lock body scroll when cart is open so the background page doesn't scroll
+    useEffect(() => {
+        if (isCartOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isCartOpen]);
 
     // Hide on admin pages
     if (pathname.startsWith("/admin")) return null;
